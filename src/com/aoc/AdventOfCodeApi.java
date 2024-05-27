@@ -14,7 +14,7 @@ public class AdventOfCodeApi {
   String sessionCookie;
 
   public AdventOfCodeApi() {
-    this.day = "2";
+    this.day = "1";
     this.year = "2023";
     this.sessionCookie = "session=YOUR_SESSION_COOKIE";
   }

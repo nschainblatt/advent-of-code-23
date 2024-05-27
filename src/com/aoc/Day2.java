@@ -12,7 +12,7 @@ public class Day2 {
   public static final int BLUE = 14;
 
   public static void main(String[] args) {
-    AdventOfCodeApi api = new AdventOfCodeApi();
+    AdventOfCodeApi api = new AdventOfCodeApi("2", "2023");
     String input = api.getInput();
 
     if (input.isEmpty()) {
