@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.aoc.AdventOfCodeApi;
 
-public class Day2 {
+public class Day2Part1 {
 
   enum Color {
     RED(12), GREEN(13), BLUE(14);
