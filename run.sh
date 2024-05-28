@@ -9,7 +9,7 @@ run () {
   echo "Running build"
   javac -d target src/com/aoc/*.java
   cd target
-  java com.aoc.Day2
+  java com.aoc.Day2Part2
 }
 
 if [[ $1 == "build" ]];
