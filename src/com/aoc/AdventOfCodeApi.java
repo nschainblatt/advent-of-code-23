@@ -41,7 +41,7 @@ public class AdventOfCodeApi {
     try {
       HttpClient client = HttpClient.newHttpClient();
       HttpRequest request = HttpRequest.newBuilder()
-          .uri(URI.create("https://adventofcode.com/2023/day/2/input"))
+          .uri(URI.create(String.format("https://adventofcode.com/%s/day/%s/input", this.year, this.day)))
           .header("Cookie",
               "session=YOUR_SESSION_COOKIE")
           .build();
