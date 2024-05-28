@@ -7,9 +7,15 @@ import com.aoc.AdventOfCodeApi;
 
 public class Day2 {
 
-  public static final int RED = 12;
-  public static final int GREEN = 13;
-  public static final int BLUE = 14;
+  enum Color {
+    RED(12), GREEN(13), BLUE(14);
+
+    int maxCount;
+
+    Color(int maxCount) {
+      this.maxCount = maxCount;
+    }
+  }
 
   public static void main(String[] args) {
     AdventOfCodeApi api = new AdventOfCodeApi("2", "2023");
@@ -47,9 +53,6 @@ public class Day2 {
 
     int id;
     String line;
-    int red;
-    int green;
-    int blue;
 
     Game(int id, String line) {
       this.id = id;
@@ -62,29 +65,14 @@ public class Day2 {
       for (String round : gameRounds) {
         String[] colorWithCounts = round.split(",");
         for (String colorWithCount : colorWithCounts) {
-          String color = colorWithCount.split(" ")[2].trim();
+          Color color = Color.valueOf(colorWithCount.split(" ")[2].trim().toUpperCase());
           int count = Integer.parseInt(colorWithCount.split(" ")[1].trim());
-          switch (color) {
-            case "red":
-              this.red += count;
-            case "green":
-              this.green += count;
-            case "blue":
-              this.blue += count;
-          }
-          if (this.red > Day2.RED || this.green > Day2.GREEN || this.blue > Day2.BLUE) {
+          if (count > color.maxCount) {
             return false;
           }
-          this.reset();
         }
       }
       return true;
-    }
-
-    void reset() {
-      this.red = 0;
-      this.green = 0;
-      this.blue = 0;
     }
 
     @Override
