@@ -27,25 +27,23 @@ public class Day2Part2 {
     }
 
     String[] splitInput = input.split("\n");
-    List<Game> possibleGames = new ArrayList<Game>();
+    List<Game> games = new ArrayList<Game>();
 
     // Note, not going to wrap every instance of parseInt in a try catch block.
     // If the input from AOC is received then it will work perfectly.
 
     for (String line : splitInput) {
-      Game newGame = new Game(
-          Integer.parseInt(line.split(":")[0].split(" ")[1]),
-          line);
-
-      if (newGame.isPossible()) {
-        possibleGames.add(newGame);
-      }
+      Game newGame = new Game(line);
+      newGame.parseLine();
+      games.add(newGame);
     }
 
     int sum = 0;
-    for (Game possibleGame : possibleGames) {
-      sum += possibleGame.id;
+    for (Game game : games) {
+      int power = game.minRedRequired * game.minGreenRequired * game.minBlueRequired;
+      sum += power;
     }
+
     System.out.println(sum);
   }
 
@@ -53,31 +51,46 @@ public class Day2Part2 {
 
     int id;
     String line;
+    List<String> rounds;
+    int minRedRequired;
+    int minGreenRequired;
+    int minBlueRequired;
 
-    Game(int id, String line) {
-      this.id = id;
+    Game(String line) {
+      this.id = Integer.parseInt(line.split(":")[0].split(" ")[1]);
       this.line = line;
+      this.rounds = new ArrayList<String>();
     }
 
-    boolean isPossible() {
+    void parseLine() {
       String gameContents = this.line.split(":")[1];
       String gameRounds[] = gameContents.split(";");
+      int roundCount = 1;
+
       for (String round : gameRounds) {
+        this.rounds.add("Round " + roundCount + ": " + round.trim());
         String[] colorWithCounts = round.split(",");
+
         for (String colorWithCount : colorWithCounts) {
           Color color = Color.valueOf(colorWithCount.split(" ")[2].trim().toUpperCase());
           int count = Integer.parseInt(colorWithCount.split(" ")[1].trim());
-          if (count > color.maxCount) {
-            return false;
+
+          if (color == Color.RED && count > this.minRedRequired) {
+            this.minRedRequired = count;
+          } else if (color == Color.GREEN && count > this.minGreenRequired) {
+            this.minGreenRequired = count;
+          } else if (color == Color.BLUE && count > this.minBlueRequired) {
+            this.minBlueRequired = count;
           }
         }
+
+        roundCount++;
       }
-      return true;
     }
 
     @Override
     public String toString() {
-      return this.line;
+      return this.rounds.toString();
     }
   }
 }
