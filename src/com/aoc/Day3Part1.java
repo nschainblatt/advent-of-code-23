@@ -40,13 +40,10 @@ public class Day3Part1 {
     for (Map.Entry<Integer, Integer[]> entry : parsedLines.get(0).numberLocations.entrySet()) {
       Integer key = entry.getKey();
       Integer[] values = entry.getValue();
-      for (Integer value : values) {
-        System.out.printf("Line: %d, Number: %d, Starting index: %d, Ending index: %d", parsedLines.get(0).number, key,
-            values[0], values[1]);
-      }
+      System.out.printf("Line: %d, Number: %d, Starting index: %d, Ending index: %d", parsedLines.get(0).number, key,
+          values[0], values[1]);
       System.out.println();
     }
-
   }
 
   // Note: may need to change to a long depending on the size of the sum of engine
@@ -63,32 +60,27 @@ public class Day3Part1 {
     int digitStartingIndex = -1;
     Character previousCharacter = null;
 
+    // Loop for getting the numbers from the line and their indeces
     for (int i = 0; i < characters.length; i++) {
-      if (characters[i] == '.' && !inDigit) {
-        continue;
-      }
-
       if (Character.isDigit(characters[i])) {
         if (previousCharacter == null || !Character.isDigit(previousCharacter)) {
           digitStartingIndex = i;
         }
         inDigit = true;
         digitBuilder.append(characters[i]);
-        continue;
       }
 
       if (characters[i] == '.' && inDigit) {
-        inDigit = false;
-
-        // i - 1 to get the previous characters index since current is a .
         parsedLine.numberLocations.put(Integer.parseInt(digitBuilder.toString()),
             new Integer[] { digitStartingIndex, i - 1 });
-        digitBuilder.delete(0, digitBuilder.length());
+        inDigit = false;
         digitStartingIndex = -1;
+        digitBuilder.delete(0, digitBuilder.length());
       }
 
       previousCharacter = characters[i];
     }
+
     return parsedLine;
   }
 
