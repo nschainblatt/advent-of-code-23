@@ -1,0 +1,17 @@
+If a number is adjacent to a non . symbol, then that number is an engine
+part.
+Goal: Get the sum of all engine part numbers.
+
+Plan
+1. Compare the current lines symbol locations to previous lines number
+locations
+locations
+(except first line obviously).
+2. Compare the current lines number locations to previous lines symbol
+locations
+3. Compare the current lines number locations to current lines symbol
+locations
+4. Ensure your not creating duplicate engine parts, you need to mark the
+already known engine parts to get an accurate sum
+5. Repeat
+

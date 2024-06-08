@@ -11,23 +11,6 @@ public class Day3Part1 {
   public static void main(String[] args) {
     AdventOfCodeApi api = new AdventOfCodeApi("3", "2023");
     String input = api.getInput();
-
-    // If a number is adjacent to a non . symbol, then that number is an engine
-    // part.
-    // Goal: Get the sum of all engine part numbers.
-
-    // Plan
-    // 1. Compare the current lines symbol locations to previous lines number locations
-    // locations
-    // (except first line obviously).
-    // 2. Compare the current lines number locations to previous lines symbol
-    // locations
-    // 3. Compare the current lines number locations to current lines symbol
-    // locations
-    // 4. Ensure your not creating duplicate engine parts, you need to mark the
-    // already known engine parts to get an accurate sum
-    // 5. Repeat
-
     String[] lines = input.split("\n");
     List<ParsedLine> parsedLines = new ArrayList<>();
 
@@ -36,19 +19,11 @@ public class Day3Part1 {
       parsedLines.add(parsedLine);
     }
 
-    // Checking the first line
-    for (Map.Entry<Integer, Integer[]> entry : parsedLines.get(0).numberLocations.entrySet()) {
-      Integer key = entry.getKey();
-      Integer[] values = entry.getValue();
-      System.out.printf("Line: %d, Number: %d, Starting index: %d, Ending index: %d", parsedLines.get(0).number, key,
-          values[0], values[1]);
-      System.out.println();
-    }
   }
 
-  // Note: may need to change to a long depending on the size of the sum of engine
+  // TODO: may need to change to a long depending on the size of the sum of engine
   // part numbers
-  public static ParsedLine parseLine(int lineNumber, String line) {
+  static ParsedLine parseLine(int lineNumber, String line) {
     ParsedLine parsedLine = new ParsedLine(lineNumber);
     char[] characters = line.toCharArray();
 
@@ -84,15 +59,28 @@ public class Day3Part1 {
     return parsedLine;
   }
 
-  static class ParsedLine {
-    int number;
-    Map<Integer, Integer[]> numberLocations;
-    Map<Character, Integer[]> symbolLocations;
+}
 
-    ParsedLine(int number) {
-      this.number = number;
-      this.numberLocations = new HashMap<Integer, Integer[]>();
-      this.symbolLocations = new HashMap<Character, Integer[]>();
+class ParsedLine {
+  int number;
+  Map<Integer, Integer[]> numberLocations;
+  Map<Character, Integer[]> symbolLocations;
+
+  ParsedLine(int number) {
+    this.number = number;
+    this.numberLocations = new HashMap<Integer, Integer[]>();
+    this.symbolLocations = new HashMap<Character, Integer[]>();
+  }
+
+  @Override
+  public boolean equals(Object other) {
+    System.out.println("Testing equality");
+    if (other == null) {
+      return false;
     }
+    if (other instanceof ParsedLine) {
+      return true;
+    }
+    return false;
   }
 }
