@@ -7,6 +7,18 @@ import java.util.ArrayList;
 
 import com.aoc.AdventOfCodeApi;
 
+// Plan:
+// Parse current line and gather symbol and number locations.
+// Check current line against previous line symbol locations. (except first line obviously)
+// Check current line against current line symbol locations.
+// Store the current parsed line for the next line to have access too
+// Go to next line and repeat...
+//
+// Remember:
+// Any number that is next to or diagnol to a symbol is counted as an engine part (. is not a symbol)
+// Do not count a number twice if next to two symbols
+// Gather the sum of all engine part numbers
+
 public class Day3Part1 {
   public static void main(String[] args) {
     AdventOfCodeApi api = new AdventOfCodeApi("3", "2023");
