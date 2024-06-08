@@ -27,30 +27,74 @@ public class Day3Part1 {
     List<ParsedLine> parsedLines = new ArrayList<>();
 
     for (int i = 0; i < lines.length; i++) {
-      ParsedLine parsedLine = parseLine(i + 1, lines[i]);
+      ParsedLine parsedLine = new ParsedLine(i + 1, lines[i]);
+      Map<Integer, Integer[]> numberLocations = parsedLine.parseNumberLocations();
+      parsedLine.setNumberLocations(numberLocations);
+      // TODO: parse and set symbolLocations
+
       parsedLines.add(parsedLine);
     }
 
+    for (Map.Entry<Integer, Integer[]> entry : parsedLines.get(0).getNumberLocations().entrySet()) {
+      Integer key = entry.getKey();
+      Integer[] values = entry.getValue();
+      System.out.printf("Line: %d, Number: %d, Starting index: %d, Ending index: %d",
+          parsedLines.get(0).getLineNumber(), key,
+          values[0], values[1]);
+      System.out.println();
+    }
   }
 
   static boolean isSymbol(char c) {
     return !(Character.isDigit(c) || c == '.');
   }
+}
 
-  // TODO: may need to change to a long
-  static ParsedLine parseLine(int lineNumber, String line) {
-    ParsedLine parsedLine = new ParsedLine(lineNumber);
-    char[] characters = line.toCharArray();
+class ParsedLine {
+  private int number;
+  private String line;
+  private Map<Integer, Integer[]> numberLocations;
+  private Map<Character, Integer[]> symbolLocations;
 
+  int getLineNumber() {
+    return this.number;
+  }
+
+  String getLine() {
+    return this.line;
+  }
+
+  Map<Integer, Integer[]> getNumberLocations() {
+    return this.numberLocations;
+  }
+
+  Map<Character, Integer[]> getSymbolLocations() {
+    return this.symbolLocations;
+  }
+
+  void setNumberLocations(Map<Integer, Integer[]> numberLocations) {
+    this.numberLocations = numberLocations;
+  }
+
+  void setSymbolLocations(Map<Character, Integer[]> symbolLocations) {
+    this.symbolLocations = symbolLocations;
+  }
+
+  ParsedLine(int number, String line) {
+    this.number = number;
+    this.line = line;
+    this.numberLocations = new HashMap<>();
+    this.symbolLocations = new HashMap<>();
+  }
+
+  Map<Integer, Integer[]> parseNumberLocations() {
     boolean inDigit = false;
-    StringBuilder digitBuilder = new StringBuilder("");
-
-    // Setting to negative one so it will fail when used as index so I can find out
-    // if it's failing
     int digitStartingIndex = -1;
     Character previousCharacter = null;
+    char[] characters = this.line.toCharArray();
+    StringBuilder digitBuilder = new StringBuilder("");
+    Map<Integer, Integer[]> numberLocations = new HashMap<>();
 
-    // Loop for getting the numbers from the line and their indeces
     for (int i = 0; i < characters.length; i++) {
       if (Character.isDigit(characters[i])) {
         if (previousCharacter == null || !Character.isDigit(previousCharacter)) {
@@ -61,7 +105,7 @@ public class Day3Part1 {
       }
 
       if (characters[i] == '.' && inDigit) {
-        parsedLine.numberLocations.put(Integer.parseInt(digitBuilder.toString()),
+        numberLocations.put(Integer.parseInt(digitBuilder.toString()),
             new Integer[] { digitStartingIndex, i - 1 });
         inDigit = false;
         digitStartingIndex = -1;
@@ -71,20 +115,7 @@ public class Day3Part1 {
       previousCharacter = characters[i];
     }
 
-    return parsedLine;
-  }
-
-}
-
-class ParsedLine {
-  int number;
-  Map<Integer, Integer[]> numberLocations;
-  Map<Character, Integer[]> symbolLocations;
-
-  ParsedLine(int number) {
-    this.number = number;
-    this.numberLocations = new HashMap<Integer, Integer[]>();
-    this.symbolLocations = new HashMap<Character, Integer[]>();
+    return numberLocations;
   }
 
   @Override
@@ -94,6 +125,8 @@ class ParsedLine {
       return false;
     }
     if (other instanceof ParsedLine) {
+      // TODO: finish equality test
+      // return this.getNumberLocations().equals(other.getNumberLocations());
       return true;
     }
     return false;
