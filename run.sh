@@ -6,8 +6,8 @@ build () {
 }
 
 run () {
-  echo "Running build"
   ./run.sh build
+  echo "Running build"
   cd target
   java com.aoc.Day3Part1
 }
