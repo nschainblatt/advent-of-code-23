@@ -31,7 +31,7 @@ public class Day3Part1 {
 
     for (int i = 0; i < lines.length; i++) {
       ParsedLine parsedLine = new ParsedLine(i + 1, lines[i]);
-      Map<Integer, Integer[]> numberLocations = parsedLine.parseNumberLocations();
+      List<Number> numberLocations = parsedLine.parseNumberLocations();
       parsedLine.setNumberLocations(numberLocations);
       Map<Character, Integer> symbolLocations = parsedLine.parseSymbolLocations();
       parsedLine.setSymbolLocations(symbolLocations);
@@ -45,16 +45,12 @@ public class Day3Part1 {
       previousParsedLine = parsedLine;
     }
 
-    for (Map.Entry<Integer, Integer[]> entry : parsedLines.get(1).getNumberLocations().entrySet()) {
-      Integer key = entry.getKey();
-      Integer[] values = entry.getValue();
-      System.out.printf("Line: %d, Number: %d, Starting index: %d, Ending index: %d",
-          parsedLines.get(1).getLineNumber(), key,
-          values[0], values[1]);
-      System.out.println();
+    for (Number numberLocation : parsedLines.get(1).getNumberLocations()) {
+      System.out.println(numberLocation);
     }
 
     System.out.println();
+
     for (Map.Entry<Character, Integer> entry : parsedLines.get(1).getSymbolLocations().entrySet()) {
       Character key = entry.getKey();
       Integer value = entry.getValue();
@@ -66,11 +62,35 @@ public class Day3Part1 {
   }
 }
 
+class Number {
+  final int value;
+  final Integer startingIndex;
+  final Integer endingIndex;
+  private boolean isEnginePart = false;
+
+  Number(int value, Integer startingIndex, Integer endingIndex) {
+    this.value = value;
+    this.startingIndex = startingIndex;
+    this.endingIndex = endingIndex;
+  }
+
+  void setIsEnginePart(boolean isEnginePart) {
+    this.isEnginePart = isEnginePart;
+  }
+
+  @Override
+  public String toString() {
+    return String.format("Value: %d, Starting Index: %d, Ending Index: %d, Engine Part: %b", this.value,
+        this.startingIndex, this.endingIndex, this.isEnginePart);
+  }
+}
+
 class ParsedLine {
   private int number;
   private String line;
-  private Map<Integer, Integer[]> numberLocations;
+  // private Map<Integer, Integer[]> numberLocations;
   private Map<Character, Integer> symbolLocations;
+  List<Number> numberLocations;
 
   int getLineNumber() {
     return this.number;
@@ -80,7 +100,7 @@ class ParsedLine {
     return this.line;
   }
 
-  Map<Integer, Integer[]> getNumberLocations() {
+  List<Number> getNumberLocations() {
     return this.numberLocations;
   }
 
@@ -88,7 +108,7 @@ class ParsedLine {
     return this.symbolLocations;
   }
 
-  void setNumberLocations(Map<Integer, Integer[]> numberLocations) {
+  void setNumberLocations(List<Number> numberLocations) {
     this.numberLocations = numberLocations;
   }
 
@@ -99,7 +119,7 @@ class ParsedLine {
   ParsedLine(int number, String line) {
     this.number = number;
     this.line = line;
-    this.numberLocations = new HashMap<>();
+    this.numberLocations = new ArrayList<>();
     this.symbolLocations = new HashMap<>();
   }
 
@@ -116,13 +136,13 @@ class ParsedLine {
     return symbolLocations;
   }
 
-  Map<Integer, Integer[]> parseNumberLocations() {
+  List<Number> parseNumberLocations() {
     boolean inDigit = false;
     int digitStartingIndex = -1;
     Character previousCharacter = null;
     char[] characters = this.line.toCharArray();
     StringBuilder digitBuilder = new StringBuilder("");
-    Map<Integer, Integer[]> numberLocations = new HashMap<>();
+    List<Number> numberLocations = new ArrayList<>();
 
     for (int i = 0; i < characters.length; i++) {
       if (Character.isDigit(characters[i])) {
@@ -134,8 +154,8 @@ class ParsedLine {
       }
 
       if (characters[i] == '.' && inDigit) {
-        numberLocations.put(Integer.parseInt(digitBuilder.toString()),
-            new Integer[] { digitStartingIndex, i - 1 });
+        Number numberLocation = new Number(Integer.parseInt(digitBuilder.toString()), digitStartingIndex, i - 1);
+        numberLocations.add(numberLocation);
         inDigit = false;
         digitStartingIndex = -1;
         digitBuilder.delete(0, digitBuilder.length());
