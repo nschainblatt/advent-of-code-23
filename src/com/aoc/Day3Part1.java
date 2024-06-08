@@ -1,11 +1,7 @@
 package com.aoc;
 
-import java.util.Map;
-import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
-
-import com.aoc.AdventOfCodeApi;
 
 // Plan:
 // Parse current line and gather symbol and number locations.
@@ -26,14 +22,14 @@ public class Day3Part1 {
     String[] lines = input.split("\n");
     List<ParsedLine> parsedLines = new ArrayList<>(); // Just for testing output, will just use a previousParsedLine
                                                       // variable to store the previous line for the algo
-    int sum = 0;
+    int sum = 0; // TODO:
     ParsedLine previousParsedLine = null;
 
     for (int i = 0; i < lines.length; i++) {
       ParsedLine parsedLine = new ParsedLine(i + 1, lines[i]);
       List<Number> numberLocations = parsedLine.parseNumberLocations();
       parsedLine.setNumberLocations(numberLocations);
-      Map<Character, Integer> symbolLocations = parsedLine.parseSymbolLocations();
+      List<Symbol> symbolLocations = parsedLine.parseSymbolLocations();
       parsedLine.setSymbolLocations(symbolLocations);
 
       parsedLines.add(parsedLine); // TEMP
@@ -51,13 +47,8 @@ public class Day3Part1 {
 
     System.out.println();
 
-    for (Map.Entry<Character, Integer> entry : parsedLines.get(1).getSymbolLocations().entrySet()) {
-      Character key = entry.getKey();
-      Integer value = entry.getValue();
-      System.out.printf("Line: %d, Symbol: %c, Index: %d",
-          parsedLines.get(1).getLineNumber(), key,
-          value);
-      System.out.println();
+    for (Symbol symbol : parsedLines.get(1).getSymbolLocations()) {
+      System.out.println(symbol);
     }
   }
 }
@@ -85,26 +76,34 @@ class Number {
   }
 }
 
+class Symbol {
+  final char value;
+  final Integer index;
+  // private boolean used; // Maybe enable later? Probably won't need if im
+                           // already tracking which numbers have already been made engine parts
+
+  Symbol(char value, Integer index) {
+    this.value = value;
+    this.index = index;
+  }
+
+  @Override
+  public String toString() {
+    return String.format("Value: %c, Index: %d", this.value, this.index);
+  }
+}
+
 class ParsedLine {
-  private int number;
-  private String line;
-  // private Map<Integer, Integer[]> numberLocations;
-  private Map<Character, Integer> symbolLocations;
-  List<Number> numberLocations;
-
-  int getLineNumber() {
-    return this.number;
-  }
-
-  String getLine() {
-    return this.line;
-  }
+  final int number;
+  final String line;
+  private List<Number> numberLocations;
+  private List<Symbol> symbolLocations;
 
   List<Number> getNumberLocations() {
     return this.numberLocations;
   }
 
-  Map<Character, Integer> getSymbolLocations() {
+  List<Symbol> getSymbolLocations() {
     return this.symbolLocations;
   }
 
@@ -112,7 +111,7 @@ class ParsedLine {
     this.numberLocations = numberLocations;
   }
 
-  void setSymbolLocations(Map<Character, Integer> symbolLocations) {
+  void setSymbolLocations(List<Symbol> symbolLocations) {
     this.symbolLocations = symbolLocations;
   }
 
@@ -120,16 +119,16 @@ class ParsedLine {
     this.number = number;
     this.line = line;
     this.numberLocations = new ArrayList<>();
-    this.symbolLocations = new HashMap<>();
+    this.symbolLocations = new ArrayList<>();
   }
 
-  Map<Character, Integer> parseSymbolLocations() {
+  List<Symbol> parseSymbolLocations() {
     char[] characters = this.line.toCharArray();
-    Map<Character, Integer> symbolLocations = new HashMap<>();
+    List<Symbol> symbolLocations = new ArrayList<>();
 
     for (int i = 0; i < characters.length; i++) {
       if (ParsedLine.isSymbol(characters[i])) {
-        symbolLocations.put(characters[i], i);
+        symbolLocations.add(new Symbol(characters[i], i));
       }
     }
 
