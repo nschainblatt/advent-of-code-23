@@ -3,11 +3,11 @@ package com.aoc;
 import java.util.Map;
 
 public class Day3Part1Test {
-  public static void main(String[] args) {
+  public static void main(String[] args) throws ParsedLineTestException {
     test1();
   }
 
-  private static void test1() {
+  private static void test1() throws ParsedLineTestException {
     String line = "...407...570..218....";
     ParsedLine parsedLine = new ParsedLine(1, line);
 
@@ -18,6 +18,9 @@ public class Day3Part1Test {
     correctlyParsedLine.setNumberLocations(correctNumberLocations);
 
     // Checking equality
-    System.out.println(parsedLine.equals(correctlyParsedLine));
+    // System.out.println(parsedLine.equals(correctlyParsedLine));
+    if (!parsedLine.equals(correctlyParsedLine)) {
+      throw new ParsedLineTestException("Failed equality test");
+    }
   }
 }

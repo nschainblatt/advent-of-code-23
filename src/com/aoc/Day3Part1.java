@@ -24,29 +24,45 @@ public class Day3Part1 {
     AdventOfCodeApi api = new AdventOfCodeApi("3", "2023");
     String input = api.getInput();
     String[] lines = input.split("\n");
-    List<ParsedLine> parsedLines = new ArrayList<>();
+    List<ParsedLine> parsedLines = new ArrayList<>(); // Just for testing output, will just use a previousParsedLine
+                                                      // variable to store the previous line for the algo
+    int sum = 0;
+    ParsedLine previousParsedLine = null;
 
     for (int i = 0; i < lines.length; i++) {
       ParsedLine parsedLine = new ParsedLine(i + 1, lines[i]);
       Map<Integer, Integer[]> numberLocations = parsedLine.parseNumberLocations();
       parsedLine.setNumberLocations(numberLocations);
-      // TODO: parse and set symbolLocations
+      Map<Character, Integer> symbolLocations = parsedLine.parseSymbolLocations();
+      parsedLine.setSymbolLocations(symbolLocations);
 
-      parsedLines.add(parsedLine);
+      parsedLines.add(parsedLine); // TEMP
+
+      if (i != 0 && previousParsedLine != null) {
+        // TODO: compare against current line and previous line
+      }
+
+      previousParsedLine = parsedLine;
     }
 
-    for (Map.Entry<Integer, Integer[]> entry : parsedLines.get(0).getNumberLocations().entrySet()) {
+    for (Map.Entry<Integer, Integer[]> entry : parsedLines.get(1).getNumberLocations().entrySet()) {
       Integer key = entry.getKey();
       Integer[] values = entry.getValue();
       System.out.printf("Line: %d, Number: %d, Starting index: %d, Ending index: %d",
-          parsedLines.get(0).getLineNumber(), key,
+          parsedLines.get(1).getLineNumber(), key,
           values[0], values[1]);
       System.out.println();
     }
-  }
 
-  static boolean isSymbol(char c) {
-    return !(Character.isDigit(c) || c == '.');
+    System.out.println();
+    for (Map.Entry<Character, Integer> entry : parsedLines.get(1).getSymbolLocations().entrySet()) {
+      Character key = entry.getKey();
+      Integer value = entry.getValue();
+      System.out.printf("Line: %d, Symbol: %c, Index: %d",
+          parsedLines.get(1).getLineNumber(), key,
+          value);
+      System.out.println();
+    }
   }
 }
 
@@ -54,7 +70,7 @@ class ParsedLine {
   private int number;
   private String line;
   private Map<Integer, Integer[]> numberLocations;
-  private Map<Character, Integer[]> symbolLocations;
+  private Map<Character, Integer> symbolLocations;
 
   int getLineNumber() {
     return this.number;
@@ -68,7 +84,7 @@ class ParsedLine {
     return this.numberLocations;
   }
 
-  Map<Character, Integer[]> getSymbolLocations() {
+  Map<Character, Integer> getSymbolLocations() {
     return this.symbolLocations;
   }
 
@@ -76,7 +92,7 @@ class ParsedLine {
     this.numberLocations = numberLocations;
   }
 
-  void setSymbolLocations(Map<Character, Integer[]> symbolLocations) {
+  void setSymbolLocations(Map<Character, Integer> symbolLocations) {
     this.symbolLocations = symbolLocations;
   }
 
@@ -85,6 +101,19 @@ class ParsedLine {
     this.line = line;
     this.numberLocations = new HashMap<>();
     this.symbolLocations = new HashMap<>();
+  }
+
+  Map<Character, Integer> parseSymbolLocations() {
+    char[] characters = this.line.toCharArray();
+    Map<Character, Integer> symbolLocations = new HashMap<>();
+
+    for (int i = 0; i < characters.length; i++) {
+      if (ParsedLine.isSymbol(characters[i])) {
+        symbolLocations.put(characters[i], i);
+      }
+    }
+
+    return symbolLocations;
   }
 
   Map<Integer, Integer[]> parseNumberLocations() {
@@ -125,10 +154,15 @@ class ParsedLine {
       return false;
     }
     if (other instanceof ParsedLine) {
+      System.out.println("Instance of ParsedLine");
       // TODO: finish equality test
       // return this.getNumberLocations().equals(other.getNumberLocations());
       return true;
     }
     return false;
+  }
+
+  static boolean isSymbol(char c) {
+    return !(Character.isDigit(c) || c == '.');
   }
 }
