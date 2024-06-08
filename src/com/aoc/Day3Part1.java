@@ -21,8 +21,11 @@ public class Day3Part1 {
 
   }
 
-  // TODO: may need to change to a long depending on the size of the sum of engine
-  // part numbers
+  static boolean isSymbol(char c) {
+    return !(Character.isDigit(c) || c == '.');
+  }
+
+  // TODO: may need to change to a long
   static ParsedLine parseLine(int lineNumber, String line) {
     ParsedLine parsedLine = new ParsedLine(lineNumber);
     char[] characters = line.toCharArray();
