@@ -140,13 +140,14 @@ class ParsedLine {
     // Check previous line numberLocations against current line symbolLocations
     for (Number previousNumber : parsedLineA.getNumberLocations()) {
       int lineLengthA = parsedLineA.line.length();
-      int offsetA = 2; // For diagonals, will be decreased if the number is the first or last item in the line since the characters to the left or right won't exist 
+      int offsetA = 2; // For diagonals, will be decreased if the number is the first or last item in
+                       // the line since the characters to the left or right won't exist
       int startingIndex = previousNumber.startingIndex - 1;
       int endingIndex = previousNumber.endingIndex + 1;
       int i = 0; // Number value index
 
       if (previousNumber.endingIndex == lineLengthA - 1) {
-        offsetA--; 
+        offsetA--;
       }
 
       if (previousNumber.startingIndex == 0) {
