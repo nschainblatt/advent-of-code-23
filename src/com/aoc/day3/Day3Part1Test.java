@@ -48,10 +48,10 @@ public class Day3Part1Test {
       List<Symbol> symbolLocations = parsedLine.parseSymbolLocations();
       parsedLine.setSymbolLocations(symbolLocations);
 
-      int partialSum = parsedLine.setAndSumEnginePartsFromCurrentParsedLine();
+      int partialSum = parsedLine.getEnginePartSumFromCurrentLine();
 
       if (i != 0 && previousParsedLine != null) {
-        partialSum += parsedLine.setAndSumEnginePartsFromPreviousParsedLine(previousParsedLine);
+        partialSum += parsedLine.getEnginePartSumFromPreviousLine(previousParsedLine);
       }
 
       sum += partialSum;

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import com.aoc.api.AdventOfCodeApi;
 
 // TODO:
-// 1. Cleanup
+// 1. Cleanup DONE
 // 2. Optimize my way
 // 3. Implement equality method
 // 4. Use equality method in tests
@@ -26,13 +26,10 @@ public class Day3Part1 {
       List<Symbol> symbolLocations = parsedLine.parseSymbolLocations();
       parsedLine.setNumberLocations(numberLocations);
       parsedLine.setSymbolLocations(symbolLocations);
-
-      // Left + Right
-      int partialSum = parsedLine.setAndSumEnginePartsFromCurrentParsedLine();
+      int partialSum = parsedLine.getEnginePartSumFromCurrentLine();
 
       if (i != 0 && previousParsedLine != null) {
-        // Above and Above Diagonal
-        partialSum += parsedLine.setAndSumEnginePartsFromPreviousParsedLine(previousParsedLine);
+        partialSum += parsedLine.getEnginePartSumFromPreviousLine(previousParsedLine);
       }
 
       sum += partialSum;
@@ -42,7 +39,7 @@ public class Day3Part1 {
     System.out.println("Sum of all Engine Parts: " + sum);
   }
 
-  static <T> boolean contains(T[] array, T element) {
+  public static <T> boolean contains(T[] array, T element) {
     for (T t : array) {
       if (t.equals(element)) {
         return true;
@@ -123,45 +120,50 @@ class ParsedLine {
     this.symbolLocations = new ArrayList<>();
   }
 
-  // Check current line numbers against current line symbols (left + right)
-  int setAndSumEnginePartsFromCurrentParsedLine() {
-    int partialSum = 0;
-    for (Number currentNumber : this.numberLocations) {
-      int possibleLeftIndex = currentNumber.startingIndex - 1;
-      int possibleRightIndex = currentNumber.endingIndex + 1;
-      for (Symbol currentSymbol : this.symbolLocations) {
-        if ((currentSymbol.index == possibleLeftIndex || currentSymbol.index == possibleRightIndex)
-            && !currentNumber.isEnginePart()) {
-          partialSum += currentNumber.value;
-          currentNumber.setIsEnginePart(true);
+  int getEnginePartSumFromCurrentLine() {
+    int sum = 0;
+    for (Number number : this.numberLocations) {
+      int possibleLeftIndex = number.startingIndex - 1;
+      int possibleRightIndex = number.endingIndex + 1;
+      for (Symbol symbol : this.symbolLocations) {
+        if ((symbol.index == possibleLeftIndex || symbol.index == possibleRightIndex)
+            && !number.isEnginePart()) {
+          sum += number.value;
+          number.setIsEnginePart(true);
         }
       }
     }
-    return partialSum;
+    return sum;
+  }
+
+  int getEnginePartSumFromPreviousLine(ParsedLine previousParsedLine) {
+    int sum = 0;
+    sum += ParsedLine.checkVerticalAndDiagonal(previousParsedLine, this);
+    sum += ParsedLine.checkVerticalAndDiagonal(this, previousParsedLine);
+    return sum;
   }
 
   private static int checkVerticalAndDiagonal(ParsedLine parsedLineA, ParsedLine parsedLineB) {
-    int partialSum = 0;
-    // Check previous line numberLocations against current line symbolLocations
+    int sum = 0;
     for (Number previousNumber : parsedLineA.getNumberLocations()) {
       int lineLengthA = parsedLineA.line.length();
-      int offsetA = 2; // For diagonals, will be decreased if the number is the first or last item in
-                       // the line since the characters to the left or right won't exist
+      int lastIndexInLine = lineLengthA - 1;
       int startingIndex = previousNumber.startingIndex - 1;
       int endingIndex = previousNumber.endingIndex + 1;
-      int i = 0; // Number value index
+      int diagonalOffset = 2;
+      int i = 0;
 
-      if (previousNumber.endingIndex == lineLengthA - 1) {
-        offsetA--;
+      if (previousNumber.endingIndex == lastIndexInLine) {
+        diagonalOffset--;
       }
 
       if (previousNumber.startingIndex == 0) {
-        offsetA--;
+        diagonalOffset--;
         startingIndex = previousNumber.startingIndex;
       }
 
-      // Check above, adding one to either end for the diagonal
-      Integer[] possibleVerticalIndeces = new Integer[Integer.toString(previousNumber.value).length() + offsetA];
+      Integer[] possibleVerticalIndeces = new Integer[Integer.toString(previousNumber.value).length() + diagonalOffset];
+
       while (startingIndex <= endingIndex && i < possibleVerticalIndeces.length) {
         possibleVerticalIndeces[i] = startingIndex;
         startingIndex++;
@@ -170,19 +172,13 @@ class ParsedLine {
 
       for (Symbol currentSymbol : parsedLineB.getSymbolLocations()) {
         if (Day3Part1.contains(possibleVerticalIndeces, currentSymbol.index) && !previousNumber.isEnginePart()) {
-          partialSum += previousNumber.value;
+          sum += previousNumber.value;
           previousNumber.setIsEnginePart(true);
         }
       }
     }
-    return partialSum;
-  }
 
-  int setAndSumEnginePartsFromPreviousParsedLine(ParsedLine previousParsedLine) {
-    int partialSum = 0;
-    partialSum += ParsedLine.checkVerticalAndDiagonal(previousParsedLine, this);
-    partialSum += ParsedLine.checkVerticalAndDiagonal(this, previousParsedLine);
-    return partialSum;
+    return sum;
   }
 
   List<Symbol> parseSymbolLocations() {
