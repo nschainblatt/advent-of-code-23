@@ -10,8 +10,7 @@ import java.util.ArrayList;
 public class Day3Part1 {
   public static void main(String[] args) {
     AdventOfCodeApi api = new AdventOfCodeApi("3", "2023");
-    String input = api.getInput();
-    String[] lines = input.split("\n");
+    String[] lines = api.getInput();
     int sum = 0;
     ParsedLine previousParsedLine = null;
 

@@ -19,14 +19,8 @@ public class Day2Part2 {
 
   public static void main(String[] args) {
     AdventOfCodeApi api = new AdventOfCodeApi("2", "2023");
-    String input = api.getInput();
+    String[] splitInput = api.getInput();
 
-    if (input.isEmpty()) {
-      System.out.println("AOC input is empty, check the session cookie");
-      return;
-    }
-
-    String[] splitInput = input.split("\n");
     List<Game> games = new ArrayList<Game>();
 
     // Note, not going to wrap every instance of parseInt in a try catch block.

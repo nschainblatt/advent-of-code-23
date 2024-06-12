@@ -37,7 +37,7 @@ public class AdventOfCodeApi {
     this.sessionCookie = sessionCookie;
   }
 
-  public String getInput() {
+  public String[] getInput() {
     try {
       HttpClient client = HttpClient.newHttpClient();
       HttpRequest request = HttpRequest.newBuilder()
@@ -46,7 +46,7 @@ public class AdventOfCodeApi {
               "session=YOUR_SESSION_COOKIE")
           .build();
       CompletableFuture<HttpResponse<String>> response = client.sendAsync(request, BodyHandlers.ofString());
-      return response.get().body();
+      return response.get().body().split("\n");
     } catch (Exception e) {
       System.out.println("An error occurred getting your input, would you like to view the error? Y/n");
       Scanner scanner = new Scanner(System.in);
@@ -55,7 +55,7 @@ public class AdventOfCodeApi {
         System.out.println(e);
       }
       System.out.println("You may need to update your session cookie");
-      return "";
+      return new String[] {};
     }
   }
 }
