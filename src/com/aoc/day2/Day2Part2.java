@@ -1,9 +1,9 @@
-package com.aoc;
+package com.aoc.day2;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.aoc.AdventOfCodeApi;
+import com.aoc.api.AdventOfCodeApi;
 
 public class Day2Part2 {
 

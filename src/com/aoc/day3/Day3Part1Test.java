@@ -1,8 +1,10 @@
-package com.aoc;
+package com.aoc.day3;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
+
+import com.aoc.exception.ParsedLineTestException;
 
 public class Day3Part1Test {
   public static void main(String[] args) throws ParsedLineTestException {

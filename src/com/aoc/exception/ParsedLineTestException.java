@@ -1,4 +1,4 @@
-package com.aoc;
+package com.aoc.exception;
 
 public class ParsedLineTestException extends Exception {
   String message;

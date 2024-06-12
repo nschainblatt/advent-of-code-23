@@ -1,4 +1,4 @@
-package com.aoc;
+package com.aoc.api;
 
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;

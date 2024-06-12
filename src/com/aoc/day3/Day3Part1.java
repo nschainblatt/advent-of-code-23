@@ -1,11 +1,17 @@
-package com.aoc;
+package com.aoc.day3;
 
 import java.util.List;
-
 import java.util.ArrayList;
 
-// TODO: Got the correct answer. Optimize and cleanup code and review other solutions
-// Implement equals method
+import com.aoc.api.AdventOfCodeApi;
+
+// TODO:
+// 1. Cleanup
+// 2. Optimize my way
+// 3. Implement equality method
+// 4. Use equality method in tests
+// 5. Review other solutions
+// 6. Fix sessionCookie problem look at notes
 
 public class Day3Part1 {
   public static void main(String[] args) {
@@ -17,8 +23,8 @@ public class Day3Part1 {
     for (int i = 0; i < lines.length; i++) {
       ParsedLine parsedLine = new ParsedLine(i + 1, lines[i]);
       List<Number> numberLocations = parsedLine.parseNumberLocations();
-      parsedLine.setNumberLocations(numberLocations);
       List<Symbol> symbolLocations = parsedLine.parseSymbolLocations();
+      parsedLine.setNumberLocations(numberLocations);
       parsedLine.setSymbolLocations(symbolLocations);
 
       // Left + Right
