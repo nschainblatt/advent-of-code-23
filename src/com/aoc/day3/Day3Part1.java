@@ -51,11 +51,11 @@ public class Day3Part1 {
 
 class Number {
   final int value;
-  final Integer startingIndex;
-  final Integer endingIndex;
+  final int startingIndex;
+  final int endingIndex;
   private boolean enginePart = false;
 
-  Number(int value, Integer startingIndex, Integer endingIndex) {
+  Number(int value, int startingIndex, int endingIndex) {
     this.value = value;
     this.startingIndex = startingIndex;
     this.endingIndex = endingIndex;
@@ -74,13 +74,28 @@ class Number {
     return String.format("Value: %d, Starting Index: %d, Ending Index: %d, Engine Part: %b", this.value,
         this.startingIndex, this.endingIndex, this.enginePart);
   }
+
+  @Override
+  public boolean equals(Object other) {
+    if (other == null) {
+      return false;
+    }
+    if (Number.class.isInstance(other)) {
+      Number otherSymbol = (Number) other;
+      if (this.value == otherSymbol.value && this.startingIndex == otherSymbol.startingIndex
+          && this.endingIndex == otherSymbol.endingIndex) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
 
 class Symbol {
   final char value;
-  final Integer index;
+  final int index;
 
-  Symbol(char value, Integer index) {
+  Symbol(char value, int index) {
     this.value = value;
     this.index = index;
   }
@@ -88,6 +103,20 @@ class Symbol {
   @Override
   public String toString() {
     return String.format("Value: %c, Index: %d", this.value, this.index);
+  }
+
+  @Override
+  public boolean equals(Object other) {
+    if (other == null) {
+      return false;
+    }
+    if (Symbol.class.isInstance(other)) {
+      Symbol otherSymbol = (Symbol) other;
+      if (this.value == otherSymbol.value && this.index == otherSymbol.index) {
+        return true;
+      }
+    }
+    return false;
   }
 }
 
@@ -231,15 +260,18 @@ class ParsedLine {
 
   @Override
   public boolean equals(Object other) {
-    System.out.println("Testing equality");
     if (other == null) {
       return false;
     }
-    if (other instanceof ParsedLine) {
-      System.out.println("Instance of ParsedLine");
-      // TODO: finish equality test
-      // return this.getNumberLocations().equals(other.getNumberLocations());
-      return true;
+    if (ParsedLine.class.isInstance(other)) {
+      ParsedLine otherParsedLine = (ParsedLine) other;
+      if (this.number == otherParsedLine.number && this.line.equals(otherParsedLine.line)) {
+        if (this.numberLocations.size() == otherParsedLine.numberLocations.size()) {
+          if (this.numberLocations.equals(otherParsedLine.numberLocations)) {
+            return true;
+          }
+        }
+      }
     }
     return false;
   }
