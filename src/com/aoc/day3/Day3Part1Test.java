@@ -8,27 +8,30 @@ import com.aoc.exception.ParsedLineTestException;
 
 public class Day3Part1Test {
   public static void main(String[] args) throws ParsedLineTestException {
-    test1();
-    test2();
+    System.out.printf("Test 1: %s\n", test1() ? "PASSED" : "FAILED");
+    System.out.printf("Test 2: %s\n", test2() ? "PASSED" : "FAILED");
   }
 
-  private static void test1() throws ParsedLineTestException {
+  private static boolean test1() throws ParsedLineTestException {
     String line = "...407...570..218....";
     ParsedLine parsedLine = new ParsedLine(1, line);
+    List<Number> numberLocations = parsedLine.parseNumberLocations();
+    List<Symbol> symbolLocations = parsedLine.parseSymbolLocations();
+    parsedLine.setNumberLocations(numberLocations);
+    parsedLine.setSymbolLocations(symbolLocations);
 
-    // Correct output
     List<Number> correctNumberLocations = Arrays.asList(new Number(407, 3, 5), new Number(570, 9, 11),
         new Number(218, 14, 16));
     ParsedLine correctlyParsedLine = new ParsedLine(1, line);
     correctlyParsedLine.setNumberLocations(correctNumberLocations);
 
-    // Checking equality
     if (!parsedLine.equals(correctlyParsedLine)) {
-      throw new ParsedLineTestException("Failed equality test");
+      return false;
     }
+    return true;
   }
 
-  private static void test2() throws ParsedLineTestException {
+  private static boolean test2() {
     String[] lines = new String[] {
         "872%..*......%.......88*484....805....178...704........282............387...........562....614..559...750..*...........@.....417......762...",
         "......745.....3...98....................*..*...............................@....329........................130.......134....$...........*...",
@@ -37,46 +40,38 @@ public class Day3Part1Test {
         ".....856.*............858....283.........43.594...292................*....*.604*.........217....................44*.....676*.........752.571",
         "..........489....................951...................83...........262.243........681....*.................373....493...........-...@......"
     };
-
     List<ParsedLine> parsedLines = new ArrayList<>();
-    int sum = 0;
+    int sumA = 0;
     ParsedLine previousParsedLine = null;
+
     for (int i = 0; i < lines.length; i++) {
       ParsedLine parsedLine = new ParsedLine(i + 1, lines[i]);
       List<Number> numberLocations = parsedLine.parseNumberLocations();
       parsedLine.setNumberLocations(numberLocations);
       List<Symbol> symbolLocations = parsedLine.parseSymbolLocations();
       parsedLine.setSymbolLocations(symbolLocations);
-
       int partialSum = parsedLine.getEnginePartSumFromCurrentLine();
 
       if (i != 0 && previousParsedLine != null) {
         partialSum += parsedLine.getEnginePartSumFromPreviousLine(previousParsedLine);
       }
 
-      sum += partialSum;
+      sumA += partialSum;
       previousParsedLine = parsedLine;
-      parsedLines.add(parsedLine); // TEMP
+      parsedLines.add(parsedLine);
     }
-    System.out.println("Engine part sum:" + sum);
 
-    int numCount = 0;
-    int engineNumCount = 0;
-    int sum2 = 0;
+    int sumB = 0;
     for (ParsedLine parsedLine : parsedLines) {
       for (Number number : parsedLine.getNumberLocations()) {
         if (number.isEnginePart()) {
-          sum2 += number.value;
-          engineNumCount++;
+          sumB += number.value;
         }
-        numCount++;
-        System.out.println(number);
-        System.out.println();
       }
     }
-    System.out.println(sum);
-    System.out.println(sum2);
-    System.out.println("Total number count: " + numCount);
-    System.out.println("Total engine part count: " + engineNumCount);
+    if (sumA != sumB) {
+      return false;
+    }
+    return true;
   }
 }
