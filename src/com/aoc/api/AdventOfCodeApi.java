@@ -9,50 +9,33 @@ import java.util.concurrent.CompletableFuture;
 import java.util.Scanner;
 
 public class AdventOfCodeApi {
-  String day;
-  String year;
-  String sessionCookie;
+  private int year;
+  private int day;
+  private String sessionCookie;
 
-  public AdventOfCodeApi() {
-    this.day = "1";
-    this.year = "2023";
-    this.sessionCookie = "session=YOUR_SESSION_COOKIE";
-  }
-
-  public AdventOfCodeApi(String day) {
-    this.day = day;
-    this.year = "2023";
-    this.sessionCookie = "session=YOUR_SESSION_COOKIE";
-  }
-
-  public AdventOfCodeApi(String day, String year) {
-    this.day = day;
+  AdventOfCodeApi(int year, int day, String sessionCookie) {
     this.year = year;
-    this.sessionCookie = "session=YOUR_SESSION_COOKIE";
-  }
-
-  public AdventOfCodeApi(String day, String year, String sessionCookie) {
     this.day = day;
-    this.year = year;
     this.sessionCookie = sessionCookie;
   }
 
   public String[] getInput() {
     try {
+      URI uri = URI.create(String.format("https://adventofcode.com/%d/day/%d/input", this.year, this.day));
       HttpClient client = HttpClient.newHttpClient();
       HttpRequest request = HttpRequest.newBuilder()
-          .uri(URI.create(String.format("https://adventofcode.com/%s/day/%s/input", this.year, this.day)))
-          .header("Cookie",
-              "session=YOUR_SESSION_COOKIE")
+          .uri(uri)
+          .header("Cookie", sessionCookie)
           .build();
       CompletableFuture<HttpResponse<String>> response = client.sendAsync(request, BodyHandlers.ofString());
       return response.get().body().split("\n");
     } catch (Exception e) {
-      System.out.println("An error occurred getting your input, would you like to view the error? Y/n");
-      Scanner scanner = new Scanner(System.in);
-      String answer = scanner.nextLine();
-      if (answer.trim().isEmpty() || answer.trim().toUpperCase() == "Y") {
-        System.out.println(e);
+      System.out.println("An error occurred getting your input, would you like to view the error? (Y/n)");
+      try (Scanner scanner = new Scanner(System.in)) {
+        String answer = scanner.nextLine();
+        if (answer.trim().isEmpty() || answer.trim().toUpperCase() == "Y") {
+          System.out.println(e);
+        }
       }
       System.out.println("You may need to update your session cookie");
       return new String[] {};

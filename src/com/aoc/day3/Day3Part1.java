@@ -1,21 +1,25 @@
 package com.aoc.day3;
 
 import java.util.List;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import com.aoc.api.AdventOfCodeApiFactory;
 import com.aoc.api.AdventOfCodeApi;
+import com.aoc.dotenv.DotEnv;
 
 // TODO:
 // 1. Cleanup DONE
 // 2. Optimize my way
-// 3. Implement equality method
-// 4. Use equality method in tests
+// 3. Implement equality method DONE
+// 4. Use equality method in tests DONE
 // 5. Review other solutions
 // 6. Fix sessionCookie problem look at notes
 
 public class Day3Part1 {
-  public static void main(String[] args) {
-    AdventOfCodeApi api = new AdventOfCodeApi("3", "2023");
+  public static void main(String[] args) throws IOException {
+    AdventOfCodeApiFactory apiFactory = new AdventOfCodeApiFactory(new DotEnv());
+    AdventOfCodeApi api = apiFactory.createApiInstance(2023, 3);
     String[] lines = api.getInput();
     int sum = 0;
     ParsedLine previousParsedLine = null;

@@ -1,9 +1,12 @@
 package com.aoc.day2;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.aoc.api.AdventOfCodeApiFactory;
 import com.aoc.api.AdventOfCodeApi;
+import com.aoc.dotenv.DotEnv;
 
 public class Day2Part2 {
 
@@ -17,8 +20,9 @@ public class Day2Part2 {
     }
   }
 
-  public static void main(String[] args) {
-    AdventOfCodeApi api = new AdventOfCodeApi("2", "2023");
+  public static void main(String[] args) throws IOException {
+    AdventOfCodeApiFactory apiFactory = new AdventOfCodeApiFactory(new DotEnv());
+    AdventOfCodeApi api = apiFactory.createApiInstance(2023, 2);
     String[] splitInput = api.getInput();
 
     List<Game> games = new ArrayList<Game>();
