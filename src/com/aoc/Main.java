@@ -23,7 +23,8 @@ public class Main {
         parsedCommandLineArguments.get(CommandLineArgument.Year),
         parsedCommandLineArguments.get(CommandLineArgument.Day),
         parsedCommandLineArguments.get(CommandLineArgument.Part));
-    aocDay.ifPresent(Day::solve);
+    aocDay.ifPresentOrElse(Day::solve,
+    () -> System.out.println("Invalid Year, Day, or Part argument"));
   }
 
   // Command line arguments are expected to be in format: Day=N, Year=int, Part=N
