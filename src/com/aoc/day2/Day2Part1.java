@@ -1,34 +1,33 @@
 package com.aoc.day2;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.aoc.api.AdventOfCodeApiFactory;
+import com.aoc.Day;
 import com.aoc.api.AdventOfCodeApi;
-import com.aoc.dotenv.DotEnv;
 
-public class Day2Part1 {
+enum Color {
+  RED(12), GREEN(13), BLUE(14);
 
-  enum Color {
-    RED(12), GREEN(13), BLUE(14);
+  int maxCount;
 
-    int maxCount;
+  Color(int maxCount) {
+    this.maxCount = maxCount;
+  }
+}
 
-    Color(int maxCount) {
-      this.maxCount = maxCount;
-    }
+public class Day2Part1 implements Day {
+
+  private AdventOfCodeApi api;
+
+  public Day2Part1(AdventOfCodeApi api) {
+    this.api = api;
   }
 
-  public static void main(String[] args) throws IOException {
-    AdventOfCodeApiFactory apiFactory = new AdventOfCodeApiFactory(new DotEnv());
-    AdventOfCodeApi api = apiFactory.createApiInstance(2023, 2);
-    String[] splitInput = api.getInput();
+  public void solve() {
+    String[] splitInput = api.getInput(2023, 2);
 
     List<Game> possibleGames = new ArrayList<Game>();
-
-    // Note, not going to wrap every instance of parseInt in a try catch block.
-    // If the input from AOC is received then it will work perfectly.
 
     for (String line : splitInput) {
       Game newGame = new Game(

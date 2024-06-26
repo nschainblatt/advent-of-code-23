@@ -1,26 +1,29 @@
 package com.aoc.day3;
 
 import java.util.List;
-import java.io.IOException;
 import java.util.ArrayList;
 
-import com.aoc.api.AdventOfCodeApiFactory;
 import com.aoc.api.AdventOfCodeApi;
-import com.aoc.dotenv.DotEnv;
+import com.aoc.Day;
 
 // TODO:
 // 1. Cleanup DONE
-// 2. Optimize my way
+// 2. Optimize my way TODO
 // 3. Implement equality method DONE
 // 4. Use equality method in tests DONE
-// 5. Review other solutions
-// 6. Fix sessionCookie problem look at notes
+// 5. Review other solutions TODO
+// 6. Implement API and remove sessionCookie from current code DONE
+// 7. Edit git history to remove cookie TODO
 
-public class Day3Part1 {
-  public static void main(String[] args) throws IOException {
-    AdventOfCodeApiFactory apiFactory = new AdventOfCodeApiFactory(new DotEnv());
-    AdventOfCodeApi api = apiFactory.createApiInstance(2023, 3);
-    String[] lines = api.getInput();
+public class Day3Part1 implements Day {
+  private AdventOfCodeApi api;
+
+  public Day3Part1(AdventOfCodeApi api) {
+    this.api = api;
+  }
+
+  public void solve() {
+    String[] lines = api.getInput(2023, 3);
     int sum = 0;
     ParsedLine previousParsedLine = null;
 

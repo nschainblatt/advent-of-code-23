@@ -9,7 +9,7 @@ run () {
   ./run.sh build
   echo "Running build"
   cd target
-  java com/aoc/day3/Day3Part1
+  java com/aoc/Main $@ # All argumants passed to this function seperated by spaces
 }
 
 test () {
@@ -33,7 +33,7 @@ then
 elif [[ $1 == "clean" ]]
 then
   clean
-elif [[ $1 == "" ]];
+elif [[ $1 == "up" ]];
 then
-  run
+  run "${@:2}" # Gives the run function all arguments from 2 and onwards seperatated by spaces (slicing)
 fi

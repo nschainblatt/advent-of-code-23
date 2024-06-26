@@ -9,19 +9,15 @@ import java.util.concurrent.CompletableFuture;
 import java.util.Scanner;
 
 public class AdventOfCodeApi {
-  private int year;
-  private int day;
   private String sessionCookie;
 
-  AdventOfCodeApi(int year, int day, String sessionCookie) {
-    this.year = year;
-    this.day = day;
+  public AdventOfCodeApi(String sessionCookie) {
     this.sessionCookie = sessionCookie;
   }
 
-  public String[] getInput() {
+  public String[] getInput(int year, int day) {
     try {
-      URI uri = URI.create(String.format("https://adventofcode.com/%d/day/%d/input", this.year, this.day));
+      URI uri = URI.create(String.format("https://adventofcode.com/%d/day/%d/input", year, day));
       HttpClient client = HttpClient.newHttpClient();
       HttpRequest request = HttpRequest.newBuilder()
           .uri(uri)
@@ -37,7 +33,7 @@ public class AdventOfCodeApi {
           System.out.println(e);
         }
       }
-      System.out.println("You may need to update your session cookie");
+      System.out.println("There was a problem getting your input, you may need to update your session cookie");
       return new String[] {};
     }
   }

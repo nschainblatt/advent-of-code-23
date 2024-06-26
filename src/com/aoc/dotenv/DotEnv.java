@@ -8,18 +8,22 @@ import java.util.HashMap;
 import java.nio.file.Paths;
 
 public class DotEnv {
+  // Sample implementation
   public static void main(String[] args) throws IOException {
-    // Sample implementation
-    DotEnv dotEnv = new DotEnv();
-    dotEnv.loadVariables();
-    Map<String, String> variables = dotEnv.getVariables();
+    Map<String, String> variables = new DotEnv()
+      .loadVariables()
+      .getVariables();
+    // variables.get("variable_name");
   }
 
   private Map<String, String> variables = new HashMap<>();
 
-  public void loadVariables() throws IOException {
-    // .env is in project root, and pwd is target when running program via run
-    // script
+  public Map<String, String> getVariables() {
+    return this.variables;
+  }
+
+  // Assumes a .env file exists in project root
+  public DotEnv loadVariables() throws IOException {
     String envPath = Paths.get("").toAbsolutePath().toString() + "/../.env";
     File env = new File(envPath);
 
@@ -43,9 +47,7 @@ public class DotEnv {
         }
       }
     }
+    return this;
   }
 
-  public Map<String, String> getVariables() {
-    return this.variables;
-  }
 }
