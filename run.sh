@@ -16,7 +16,7 @@ test () {
   echo "Running tests"
   ./run.sh build
   cd target
-  java com.aoc.day3.Day3Part1Test
+  java com.aoc.tests.MainTest
 }
 
 clean () {

@@ -1,28 +1,30 @@
-package com.aoc.day3;
+package com.aoc.tests;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 
+import com.aoc.day3.Day3Part1;
 import com.aoc.exception.ParsedLineTestException;
 
 public class Day3Part1Test {
-  public static void main(String[] args) throws ParsedLineTestException {
+  public static void run() throws ParsedLineTestException {
     System.out.printf("Test 1: %s\n", test1() ? "PASSED" : "FAILED");
     System.out.printf("Test 2: %s\n", test2() ? "PASSED" : "FAILED");
   }
 
   private static boolean test1() throws ParsedLineTestException {
     String line = "...407...570..218....";
-    ParsedLine parsedLine = new ParsedLine(1, line);
-    List<Number> numberLocations = parsedLine.parseNumberLocations();
-    List<Symbol> symbolLocations = parsedLine.parseSymbolLocations();
+    Day3Part1.ParsedLine parsedLine = new Day3Part1.ParsedLine(1, line);
+    List<Day3Part1.Number> numberLocations = parsedLine.parseNumberLocations();
+    List<Day3Part1.Symbol> symbolLocations = parsedLine.parseSymbolLocations();
     parsedLine.setNumberLocations(numberLocations);
     parsedLine.setSymbolLocations(symbolLocations);
 
-    List<Number> correctNumberLocations = Arrays.asList(new Number(407, 3, 5), new Number(570, 9, 11),
-        new Number(218, 14, 16));
-    ParsedLine correctlyParsedLine = new ParsedLine(1, line);
+    List<Day3Part1.Number> correctNumberLocations = Arrays.asList(new Day3Part1.Number(407, 3, 5),
+        new Day3Part1.Number(570, 9, 11),
+        new Day3Part1.Number(218, 14, 16));
+    Day3Part1.ParsedLine correctlyParsedLine = new Day3Part1.ParsedLine(1, line);
     correctlyParsedLine.setNumberLocations(correctNumberLocations);
 
     if (!parsedLine.equals(correctlyParsedLine)) {
@@ -40,15 +42,15 @@ public class Day3Part1Test {
         ".....856.*............858....283.........43.594...292................*....*.604*.........217....................44*.....676*.........752.571",
         "..........489....................951...................83...........262.243........681....*.................373....493...........-...@......"
     };
-    List<ParsedLine> parsedLines = new ArrayList<>();
+    List<Day3Part1.ParsedLine> parsedLines = new ArrayList<>();
     int sumA = 0;
-    ParsedLine previousParsedLine = null;
+    Day3Part1.ParsedLine previousParsedLine = null;
 
     for (int i = 0; i < lines.length; i++) {
-      ParsedLine parsedLine = new ParsedLine(i + 1, lines[i]);
-      List<Number> numberLocations = parsedLine.parseNumberLocations();
+      Day3Part1.ParsedLine parsedLine = new Day3Part1.ParsedLine(i + 1, lines[i]);
+      List<Day3Part1.Number> numberLocations = parsedLine.parseNumberLocations();
       parsedLine.setNumberLocations(numberLocations);
-      List<Symbol> symbolLocations = parsedLine.parseSymbolLocations();
+      List<Day3Part1.Symbol> symbolLocations = parsedLine.parseSymbolLocations();
       parsedLine.setSymbolLocations(symbolLocations);
       int partialSum = parsedLine.getEnginePartSumFromCurrentLine();
 
@@ -62,8 +64,8 @@ public class Day3Part1Test {
     }
 
     int sumB = 0;
-    for (ParsedLine parsedLine : parsedLines) {
-      for (Number number : parsedLine.getNumberLocations()) {
+    for (Day3Part1.ParsedLine parsedLine : parsedLines) {
+      for (Day3Part1.Number number : parsedLine.getNumberLocations()) {
         if (number.isEnginePart()) {
           sumB += number.value;
         }
