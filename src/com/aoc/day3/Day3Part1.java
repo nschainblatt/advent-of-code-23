@@ -13,7 +13,7 @@ import com.aoc.Day;
 // 4. Use equality method in tests DONE
 // 5. Review other solutions TODO
 // 6. Implement API and remove sessionCookie from current code DONE
-// 7. Edit git history to remove cookie TODO
+// 7. Edit git history to remove cookie DONE
 // 8. Refactor tests DONE 
 
 public class Day3Part1 implements Day {
@@ -23,7 +23,7 @@ public class Day3Part1 implements Day {
     this.api = api;
   }
 
-  public void solve() {
+  public int solve() {
     String[] lines = api.getInput(2023, 3);
     int sum = 0;
     ParsedLine previousParsedLine = null;
@@ -44,7 +44,7 @@ public class Day3Part1 implements Day {
       previousParsedLine = parsedLine;
     }
 
-    System.out.println("Sum of all Engine Parts: " + sum);
+    return sum;
   }
 
   public static <T> boolean contains(T[] array, T element) {

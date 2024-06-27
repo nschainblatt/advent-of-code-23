@@ -4,16 +4,26 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 
+import com.aoc.api.AdventOfCodeApi;
 import com.aoc.day3.Day3Part1;
 import com.aoc.exception.ParsedLineTestException;
 
 public class Day3Part1Test {
-  public static void run() throws ParsedLineTestException {
-    System.out.printf("Test 1: %s\n", test1() ? "PASSED" : "FAILED");
-    System.out.printf("Test 2: %s\n", test2() ? "PASSED" : "FAILED");
+  AdventOfCodeApi api;
+
+  public Day3Part1Test(AdventOfCodeApi api) {
+    this.api = api;
   }
 
-  private static boolean test1() throws ParsedLineTestException {
+  public void run() throws ParsedLineTestException {
+    System.out.println("Running tests for day 3 part 1:");
+    System.out.printf("Test 1: Single line test: %s\n", singleLineTest() ? "PASSED" : "FAILED");
+    System.out.printf("Test 2: Multiple line test: %s\n", multipleLineTest() ? "PASSED" : "FAILED");
+    System.out.printf("Test 3: Day 3 part 1 input test: %s\n", day3Part1InputTest() ? "PASSED" : "FAILED");
+    System.out.println();
+  }
+
+  private boolean singleLineTest() throws ParsedLineTestException {
     String line = "...407...570..218....";
     Day3Part1.ParsedLine parsedLine = new Day3Part1.ParsedLine(1, line);
     List<Day3Part1.Number> numberLocations = parsedLine.parseNumberLocations();
@@ -33,7 +43,7 @@ public class Day3Part1Test {
     return true;
   }
 
-  private static boolean test2() {
+  private boolean multipleLineTest() {
     String[] lines = new String[] {
         "872%..*......%.......88*484....805....178...704........282............387...........562....614..559...750..*...........@.....417......762...",
         "......745.....3...98....................*..*...............................@....329........................130.......134....$...........*...",
@@ -75,5 +85,9 @@ public class Day3Part1Test {
       return false;
     }
     return true;
+  }
+
+  private boolean day3Part1InputTest() {
+    return 509115 == new Day3Part1(this.api).solve();
   }
 }

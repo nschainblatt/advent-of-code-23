@@ -24,7 +24,7 @@ public class Day2Part1 implements Day {
     this.api = api;
   }
 
-  public void solve() {
+  public int solve() {
     String[] splitInput = api.getInput(2023, 2);
 
     List<Game> possibleGames = new ArrayList<Game>();
@@ -43,7 +43,8 @@ public class Day2Part1 implements Day {
     for (Game possibleGame : possibleGames) {
       sum += possibleGame.id;
     }
-    System.out.println(sum);
+
+    return sum;
   }
 
   static class Game {
