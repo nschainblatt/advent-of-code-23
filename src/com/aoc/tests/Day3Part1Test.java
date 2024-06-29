@@ -88,6 +88,10 @@ public class Day3Part1Test {
   }
 
   private boolean day3Part1InputTest() {
-    return 509115 == new Day3Part1(this.api).solve();
+    long startTime = System.nanoTime();
+    int result = new Day3Part1(this.api).solve();
+    double duration = Long.valueOf((System.nanoTime() - startTime)).doubleValue() / 1_000_000_000;
+    System.out.printf("Day 3 part 1 took: %f seconds\n", duration);
+    return 509115 == result;
   }
 }

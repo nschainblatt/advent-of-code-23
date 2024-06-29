@@ -15,6 +15,7 @@ import com.aoc.Day;
 // 6. Implement API and remove sessionCookie from current code DONE
 // 7. Edit git history to remove cookie DONE
 // 8. Refactor tests DONE 
+//
 
 public class Day3Part1 implements Day {
   private AdventOfCodeApi api;
@@ -91,6 +92,9 @@ public class Day3Part1 implements Day {
         int possibleLeftIndex = number.startingIndex - 1;
         int possibleRightIndex = number.endingIndex + 1;
         for (Symbol symbol : this.symbolLocations) {
+          if (symbol.index > possibleRightIndex) {
+            break;
+          }
           if ((symbol.index == possibleLeftIndex || symbol.index == possibleRightIndex)
               && !number.isEnginePart()) {
             sum += number.value;
@@ -137,6 +141,9 @@ public class Day3Part1 implements Day {
         }
 
         for (Symbol currentSymbol : parsedLineB.getSymbolLocations()) {
+          if (currentSymbol.index > endingIndex) {
+            break;
+          }
           if (Day3Part1.contains(possibleVerticalIndeces, currentSymbol.index) && !previousNumber.isEnginePart()) {
             sum += previousNumber.value;
             previousNumber.setIsEnginePart(true);
