@@ -7,11 +7,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-enum CommandLineArgument {
-  Year, Day, Part
-}
-
 public class Main {
+  public static enum CommandLineArgument {
+    Year, Day, Part
+  }
+
   public static final int DEFAULT_YEAR = 2023;
   public static final int DEFAULT_DAY = 3;
   public static final int DEFAULT_PART = 1;
@@ -24,6 +24,10 @@ public class Main {
         parsedCommandLineArguments.get(CommandLineArgument.Day),
         parsedCommandLineArguments.get(CommandLineArgument.Part));
 
+    System.out.printf("Year: %d, Day %d, Part: %d\n",
+        parsedCommandLineArguments.get(CommandLineArgument.Year),
+        parsedCommandLineArguments.get(CommandLineArgument.Day),
+        parsedCommandLineArguments.get(CommandLineArgument.Part));
     aocDay.ifPresentOrElse(
         (day) -> System.out.printf("Result: %d\n", day.solve()),
         () -> System.out.println("Invalid Year, Day, or Part argument"));
@@ -31,7 +35,7 @@ public class Main {
 
   // Command line arguments are expected to be in format: Day=N, Year=int, Part=N
   // and are optional
-  private static Map<CommandLineArgument, Integer> parseCommandLineArguments(String[] args) {
+  public static Map<CommandLineArgument, Integer> parseCommandLineArguments(String[] args) {
     Map<CommandLineArgument, Integer> parsedCommandLineArguments = new HashMap<>();
     parsedCommandLineArguments.put(CommandLineArgument.Year, DEFAULT_YEAR);
     parsedCommandLineArguments.put(CommandLineArgument.Day, DEFAULT_DAY);

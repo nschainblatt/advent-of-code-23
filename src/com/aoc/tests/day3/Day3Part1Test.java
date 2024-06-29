@@ -1,4 +1,4 @@
-package com.aoc.tests;
+package com.aoc.tests.day3;
 
 import java.util.Arrays;
 import java.util.List;
@@ -7,8 +7,9 @@ import java.util.ArrayList;
 import com.aoc.api.AdventOfCodeApi;
 import com.aoc.day3.Day3Part1;
 import com.aoc.exception.ParsedLineTestException;
+import com.aoc.tests.DayTest;
 
-public class Day3Part1Test {
+public class Day3Part1Test implements DayTest {
   AdventOfCodeApi api;
 
   public Day3Part1Test(AdventOfCodeApi api) {

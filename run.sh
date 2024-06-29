@@ -16,7 +16,7 @@ test () {
   echo "Running tests"
   ./run.sh build
   cd target
-  java com.aoc.tests.MainTest
+  java com.aoc.tests.MainTest $@
 }
 
 clean () {
@@ -29,7 +29,7 @@ then
   build
 elif [[ $1 == "test" ]];
 then
-  test
+  test "${@:2}"
 elif [[ $1 == "clean" ]]
 then
   clean
