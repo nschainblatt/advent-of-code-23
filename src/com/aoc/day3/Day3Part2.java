@@ -15,8 +15,10 @@ public class Day3Part2 implements Day {
 
   public int solve() {
     String[] lines = api.getInput(2023, 3);
-    int sum = 0;
+    int gearSum = 0;
     ParsedLine previousParsedLine = null;
+
+    List<ParsedLine> parsedLines = new ArrayList<>();
 
     for (int i = 0; i < lines.length; i++) {
       ParsedLine parsedLine = new ParsedLine(i + 1, lines[i]);
@@ -24,17 +26,25 @@ public class Day3Part2 implements Day {
       List<Symbol> symbolLocations = parsedLine.parseSymbolLocations();
       parsedLine.setNumberLocations(numberLocations);
       parsedLine.setSymbolLocations(symbolLocations);
-      int partialSum = parsedLine.getEnginePartSumFromCurrentLine();
+      parsedLine.getEnginePartSumFromCurrentLine();
 
       if (i != 0 && previousParsedLine != null) {
-        partialSum += parsedLine.getEnginePartSumFromPreviousLine(previousParsedLine);
+        parsedLine.getEnginePartSumFromPreviousLine(previousParsedLine);
       }
 
-      sum += partialSum;
       previousParsedLine = parsedLine;
+      parsedLines.add(parsedLine);
     }
 
-    return sum;
+    for (ParsedLine parsedLine : parsedLines) {
+      for (Symbol symbol : parsedLine.getSymbolLocations()) {
+        if (symbol.enginePartNumbers.size() == 2) {
+          gearSum += symbol.enginePartNumbers.get(0) * symbol.enginePartNumbers.get(1);
+        }
+      }
+    }
+
+    return gearSum;
   }
 
   public static <T> boolean contains(T[] array, T element) {
@@ -86,6 +96,9 @@ public class Day3Part2 implements Day {
           }
           if ((symbol.index == possibleLeftIndex || symbol.index == possibleRightIndex)
               && !number.isEnginePart()) {
+            if (symbol.value == '*') {
+              symbol.enginePartNumbers.add(number.value);
+            }
             sum += number.value;
             number.setIsEnginePart(true);
           }
@@ -134,6 +147,9 @@ public class Day3Part2 implements Day {
             break;
           }
           if (Day3Part1.contains(possibleVerticalIndeces, currentSymbol.index) && !previousNumber.isEnginePart()) {
+            if (currentSymbol.value == '*') {
+              currentSymbol.enginePartNumbers.add(previousNumber.value);
+            }
             sum += previousNumber.value;
             previousNumber.setIsEnginePart(true);
           }
@@ -260,6 +276,7 @@ public class Day3Part2 implements Day {
   public static class Symbol {
     public final char value;
     public final int index;
+    private final List<Integer> enginePartNumbers = new ArrayList<>();
 
     public Symbol(char value, int index) {
       this.value = value;
