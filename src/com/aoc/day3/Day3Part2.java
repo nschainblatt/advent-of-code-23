@@ -18,30 +18,11 @@ public class Day3Part2 implements Day {
     int gearSum = 0;
     ParsedLine previousParsedLine = null;
 
-    List<ParsedLine> parsedLines = new ArrayList<>();
-
     for (int i = 0; i < lines.length; i++) {
       ParsedLine parsedLine = new ParsedLine(i + 1, lines[i]);
-      List<Number> numberLocations = parsedLine.parseNumberLocations();
-      List<Symbol> symbolLocations = parsedLine.parseSymbolLocations();
-      parsedLine.setNumberLocations(numberLocations);
-      parsedLine.setSymbolLocations(symbolLocations);
-      parsedLine.getEnginePartSumFromCurrentLine();
-
-      if (i != 0 && previousParsedLine != null) {
-        parsedLine.getEnginePartSumFromPreviousLine(previousParsedLine);
-      }
-
+      parsedLine.parseLine();
+      gearSum += parsedLine.calculateGearSum(previousParsedLine);
       previousParsedLine = parsedLine;
-      parsedLines.add(parsedLine);
-    }
-
-    for (ParsedLine parsedLine : parsedLines) {
-      for (Symbol symbol : parsedLine.getSymbolLocations()) {
-        if (symbol.enginePartNumbers.size() == 2) {
-          gearSum += symbol.enginePartNumbers.get(0) * symbol.enginePartNumbers.get(1);
-        }
-      }
     }
 
     return gearSum;
@@ -85,73 +66,70 @@ public class Day3Part2 implements Day {
       this.symbolLocations = new ArrayList<>();
     }
 
-    public int getEnginePartSumFromCurrentLine() {
+    public int calculateGearSum(ParsedLine previousParsedLine) {
       int sum = 0;
-      for (Number number : this.numberLocations) {
-        int possibleLeftIndex = number.startingIndex - 1;
-        int possibleRightIndex = number.endingIndex + 1;
-        for (Symbol symbol : this.symbolLocations) {
-          if (symbol.index > possibleRightIndex) {
-            break;
-          }
-          if ((symbol.index == possibleLeftIndex || symbol.index == possibleRightIndex)
-              && !number.isEnginePart()) {
-            if (symbol.value == '*') {
-              symbol.enginePartNumbers.add(number.value);
-            }
-            sum += number.value;
-            number.setIsEnginePart(true);
-          }
-        }
+      if (previousParsedLine == null) {
+        return sum;
       }
+
+      // Current line numbers against current line symbols
+      sum += ParsedLine.calculateGearSum(this, this);
+
+      // Current line numbers against previous line symbols
+      sum += ParsedLine.calculateGearSum(this, previousParsedLine);
+
+      // Previous line numbers against previous line symbols
+      sum += ParsedLine.calculateGearSum(previousParsedLine, this);
       return sum;
     }
 
-    public int getEnginePartSumFromPreviousLine(ParsedLine previousParsedLine) {
+    private static int calculateGearSum(ParsedLine parsedLineA, ParsedLine parsedLineB) {
       int sum = 0;
-      sum += ParsedLine.checkVerticalAndDiagonal(previousParsedLine, this);
-      sum += ParsedLine.checkVerticalAndDiagonal(this, previousParsedLine);
-      return sum;
-    }
+      for (Number numberA : parsedLineA.getNumberLocations()) {
+        // Horizontal
+        int possibleLeftIndex = numberA.startingIndex - 1;
+        int possibleRightIndex = numberA.endingIndex + 1;
 
-    private static int checkVerticalAndDiagonal(ParsedLine parsedLineA, ParsedLine parsedLineB) {
-      int sum = 0;
-      for (Number previousNumber : parsedLineA.getNumberLocations()) {
+        // Vertical
         int lineLengthA = parsedLineA.line.length();
         int lastIndexInLine = lineLengthA - 1;
-        int startingIndex = previousNumber.startingIndex - 1;
-        int endingIndex = previousNumber.endingIndex + 1;
+        int startingIndex = numberA.startingIndex - 1;
+        int endingIndex = numberA.endingIndex + 1;
         int diagonalOffset = 2;
-        int i = 0;
 
-        if (previousNumber.endingIndex == lastIndexInLine) {
+        if (numberA.endingIndex == lastIndexInLine) {
           diagonalOffset--;
         }
 
-        if (previousNumber.startingIndex == 0) {
+        if (numberA.startingIndex == 0) {
           diagonalOffset--;
-          startingIndex = previousNumber.startingIndex;
+          startingIndex = numberA.startingIndex;
         }
 
-        Integer[] possibleVerticalIndeces = new Integer[Integer.toString(previousNumber.value).length()
+        Integer[] possibleVerticalIndeces = new Integer[Integer.toString(numberA.value).length()
             + diagonalOffset];
 
+        int i = 0;
         while (startingIndex <= endingIndex && i < possibleVerticalIndeces.length) {
           possibleVerticalIndeces[i] = startingIndex;
           startingIndex++;
           i++;
         }
 
-        for (Symbol currentSymbol : parsedLineB.getSymbolLocations()) {
-          if (currentSymbol.index > endingIndex) {
+        for (Symbol symbolB : parsedLineB.getSymbolLocations()) {
+          if (symbolB.index > endingIndex) {
             break;
           }
-          if (Day3Part1.contains(possibleVerticalIndeces, currentSymbol.index) && !previousNumber.isEnginePart()) {
-            if (currentSymbol.value == '*') {
-              currentSymbol.enginePartNumbers.add(previousNumber.value);
+
+          if (possibleLeftIndex == symbolB.index || possibleRightIndex == symbolB.index
+              || (Day3Part1.contains(possibleVerticalIndeces, symbolB.index) && !numberA.isEnginePart())) {
+            if (symbolB.value == '*') {
+              symbolB.enginePartNumbers.add(numberA.value);
+              if (symbolB.enginePartNumbers.size() == 2) {
+                sum += symbolB.enginePartNumbers.stream().reduce((acc, next) -> acc * next).orElse(0);
+              }
             }
-            sum += previousNumber.value;
-            previousNumber.setIsEnginePart(true);
+            numberA.setIsEnginePart(true);
           }
         }
       }
@@ -159,28 +137,23 @@ public class Day3Part2 implements Day {
       return sum;
     }
 
-    public List<Symbol> parseSymbolLocations() {
-      char[] characters = this.line.toCharArray();
-      List<Symbol> symbolLocations = new ArrayList<>();
-
-      for (int i = 0; i < characters.length; i++) {
-        if (ParsedLine.isSymbol(characters[i])) {
-          symbolLocations.add(new Symbol(characters[i], i));
-        }
-      }
-
-      return symbolLocations;
-    }
-
-    public List<Number> parseNumberLocations() {
+    /**
+     * Parsed line instance field and set NumberLocations and SymbolLocations
+     */
+    public void parseLine() {
       boolean inDigit = false;
       int digitStartingIndex = -1;
       Character previousCharacter = null;
       char[] characters = this.line.toCharArray();
       StringBuilder digitBuilder = new StringBuilder("");
       List<Number> numberLocations = new ArrayList<>();
+      List<Symbol> symbolLocations = new ArrayList<>();
 
       for (int i = 0; i < characters.length; i++) {
+        if (this.isSymbol(characters[i])) {
+          symbolLocations.add(new Symbol(characters[i], i));
+        }
+
         if (Character.isDigit(characters[i])) {
           if (previousCharacter == null || !Character.isDigit(previousCharacter)) {
             digitStartingIndex = i;
@@ -205,28 +178,11 @@ public class Day3Part2 implements Day {
         previousCharacter = characters[i];
       }
 
-      return numberLocations;
+      this.numberLocations = numberLocations;
+      this.symbolLocations = symbolLocations;
     }
 
-    @Override
-    public boolean equals(Object other) {
-      if (other == null) {
-        return false;
-      }
-      if (ParsedLine.class.isInstance(other)) {
-        ParsedLine otherParsedLine = (ParsedLine) other;
-        if (this.number == otherParsedLine.number && this.line.equals(otherParsedLine.line)) {
-          if (this.numberLocations.size() == otherParsedLine.numberLocations.size()) {
-            if (this.numberLocations.equals(otherParsedLine.numberLocations)) {
-              return true;
-            }
-          }
-        }
-      }
-      return false;
-    }
-
-    static boolean isSymbol(char c) {
+    private boolean isSymbol(char c) {
       return !(Character.isDigit(c) || c == '.');
     }
   }
@@ -250,27 +206,6 @@ public class Day3Part2 implements Day {
     private void setIsEnginePart(boolean isEnginePart) {
       this.enginePart = isEnginePart;
     }
-
-    @Override
-    public String toString() {
-      return String.format("Value: %d, Starting Index: %d, Ending Index: %d, Engine Part: %b", this.value,
-          this.startingIndex, this.endingIndex, this.enginePart);
-    }
-
-    @Override
-    public boolean equals(Object other) {
-      if (other == null) {
-        return false;
-      }
-      if (Number.class.isInstance(other)) {
-        Number otherSymbol = (Number) other;
-        if (this.value == otherSymbol.value && this.startingIndex == otherSymbol.startingIndex
-            && this.endingIndex == otherSymbol.endingIndex) {
-          return true;
-        }
-      }
-      return false;
-    }
   }
 
   public static class Symbol {
@@ -281,25 +216,6 @@ public class Day3Part2 implements Day {
     public Symbol(char value, int index) {
       this.value = value;
       this.index = index;
-    }
-
-    @Override
-    public String toString() {
-      return String.format("Value: %c, Index: %d", this.value, this.index);
-    }
-
-    @Override
-    public boolean equals(Object other) {
-      if (other == null) {
-        return false;
-      }
-      if (Symbol.class.isInstance(other)) {
-        Symbol otherSymbol = (Symbol) other;
-        if (this.value == otherSymbol.value && this.index == otherSymbol.index) {
-          return true;
-        }
-      }
-      return false;
     }
   }
 }

@@ -22,7 +22,7 @@ public class Day3Part2Test implements DayTest {
     int result = new Day3Part2(this.api).solve();
     double duration = Long.valueOf((System.nanoTime() - startTime)).doubleValue() / 1_000_000_000;
     System.out.printf("Day 3 part 2 optimized took: %f seconds\n", duration);
-    System.out.printf("Test result: %d should equal: %d\n", result, 509115);
+    System.out.printf("Test result: %d should equal: %d\n", result, 75220503);
     return 75220503 == result;
   }
 }
