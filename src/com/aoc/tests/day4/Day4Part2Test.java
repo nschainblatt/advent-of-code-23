@@ -3,7 +3,7 @@ package com.aoc.tests.day4;
 import java.util.List;
 
 import com.aoc.api.AdventOfCodeApi;
-import com.aoc.day4.Day4Part1;
+import com.aoc.day4.Day4Part2;
 import com.aoc.tests.DayTest;
 
 public class Day4Part2Test implements DayTest {
@@ -22,15 +22,15 @@ public class Day4Part2Test implements DayTest {
     }
 
     public void run() {
-        System.out.println("Running tests for day 4 part 1");
+        System.out.println("Running tests for day 4 part 2");
         System.out.printf("Test 1: Day 4 example test: %s\n", day4ExampleTest() ? "PASSED" : "FAILED");
         System.out.printf("Test 2: Day 4 number parsed test: %s\n", numberParserTest() ? "PASSED" : "FAILED");
-        System.out.printf("Test 3: Day 4 timed input test: %s\n", day4Part1InputTest() ? "PASSED" : "FAILED");
+        System.out.printf("Test 3: Day 4 timed input test: %s\n", day4Part2InputTest() ? "PASSED" : "FAILED");
     }
 
     private boolean day4ExampleTest() {
-        Day4Part1 day4Part1 = new Day4Part1();
-        int answer = day4Part1.solve(exampleInput.split("\n"));
+        Day4Part2 day4Part2 = new Day4Part2();
+        int answer = day4Part2.solve(exampleInput.split("\n"));
         System.out.printf("Result should equal: %d. Result equals: %d\n", 13, answer);
         return answer == 13;
     }
@@ -57,8 +57,8 @@ public class Day4Part2Test implements DayTest {
             String[] linePart = input[i].split("\\|");
             String myNumbersAsString = linePart[1];
             String winningNumbersAsString = linePart[0].split("\\:")[1];
-            List<Integer> myNumbersTest = Day4Part1.parseLineNumbers(myNumbersAsString);
-            List<Integer> winningNumbersTest = Day4Part1.parseLineNumbers(winningNumbersAsString);
+            List<Integer> myNumbersTest = Day4Part2.parseLineNumbers(myNumbersAsString);
+            List<Integer> winningNumbersTest = Day4Part2.parseLineNumbers(winningNumbersAsString);
             if (!winningNumbers.get(i).equals(winningNumbersTest) || !myNumbers.get(i).equals(myNumbersTest)) {
                 return false;
             }
@@ -67,13 +67,13 @@ public class Day4Part2Test implements DayTest {
         return true;
     }
 
-    private boolean day4Part1InputTest() {
+    private boolean day4Part2InputTest() {
         long startTime = System.nanoTime();
         String[] input = api.getInput(2023, 4);
-        Day4Part1 day4Part1 = new Day4Part1();
-        int answer = day4Part1.solve(input);
+        Day4Part2 day4Part2 = new Day4Part2();
+        int answer = day4Part2.solve(input);
         long endTime = System.nanoTime() - startTime;
-        System.out.printf("Day 4 part 1 took: %f seconds\n", ((double) endTime) / 1_000_000_000);
+        System.out.printf("Day 4 part 2 took: %f seconds\n", ((double) endTime) / 1_000_000_000);
         return answer == 17782;
     }
 }
