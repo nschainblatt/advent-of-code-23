@@ -23,7 +23,6 @@ public class Day4Part1Test implements DayTest {
     }
 
     public void run() {
-        // TODO:
         System.out.println("Running tests for day 4 part 1");
         System.out.printf("Test 1: Day 4 example test: %s\n", day4ExampleTest() ? "PASSED" : "FAILED");
         System.out.printf("Test 2: Day 4 number parsed test: %s\n", numberParserTest() ? "PASSED" : "FAILED");

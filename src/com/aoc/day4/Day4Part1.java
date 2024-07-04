@@ -12,11 +12,9 @@ import com.aoc.Day;
 public class Day4Part1 implements Day {
 
   public int solve(String[] input) {
-    int sum = 0;
-
     // The card will be index + 1
-
-    processInput(input);
+    Map<String, List<List<Integer>>> processedInput = processInput(input);
+    int sum = getWinningPoints(processedInput.get("myNumbers"), processedInput.get("winningNumbers"));
 
     return sum;
   }
@@ -40,5 +38,24 @@ public class Day4Part1 implements Day {
     return Arrays.stream(linePart.trim().split(" "))
         .filter(Predicate.not(String::isEmpty))
         .mapToInt(s -> Integer.parseInt(s.trim())).boxed().collect(Collectors.toList());
+  }
+
+  private static int getWinningPoints(List<List<Integer>> myNumbers, List<List<Integer>> winningNumbers) {
+    int totalPointSum = 0;
+    int currentCardPoints = 0;
+
+    // NOTE: Both outer lists are the same size, their elements belong to the same
+    // card/row
+    for (int i = 0; i < myNumbers.size(); i++) {
+      for (Integer cardWinningNumber : winningNumbers.get(i)) {
+        if (myNumbers.get(i).contains(cardWinningNumber)) {
+          currentCardPoints = currentCardPoints == 0 ? 1 : currentCardPoints * 2;
+        }
+      }
+      totalPointSum += currentCardPoints;
+      currentCardPoints = 0;
+    }
+
+    return totalPointSum;
   }
 }
