@@ -17,7 +17,7 @@ public class Main {
 
   public static final int DEFAULT_YEAR = 2023;
   public static final int DEFAULT_DAY = 4;
-  public static final int DEFAULT_PART = 1;
+  public static final int DEFAULT_PART = 2;
 
   public static void main(String[] args) throws IOException, DayNotFoundException {
     // args = new String[] {"Day=1", "Year=2024", "Part=1"};

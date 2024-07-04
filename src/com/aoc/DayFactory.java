@@ -32,6 +32,8 @@ public class DayFactory {
       case 4:
         if (part == 1) {
           return Optional.ofNullable(new Day4Part1());
+        } else if (part == 2) {
+          return Optional.ofNullable(new Day4Part2());
         }
         return Optional.empty();
     }

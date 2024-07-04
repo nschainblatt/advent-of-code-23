@@ -6,7 +6,7 @@ import java.util.Optional;
 import com.aoc.api.AdventOfCodeApi;
 import com.aoc.dotenv.DotEnv;
 import com.aoc.tests.day3.*;
-import com.aoc.tests.day4.Day4Part1Test;
+import com.aoc.tests.day4.*;
 import com.aoc.tests.DayTest;
 
 // TODO: add year condition
@@ -35,6 +35,8 @@ public class DayTestFactory {
       case 4:
         if (part == 1) {
           return Optional.ofNullable(new Day4Part1Test(api));
+        } else if (part == 2) {
+          return Optional.ofNullable(new Day4Part2Test(api));
         }
         return Optional.empty();
     }
