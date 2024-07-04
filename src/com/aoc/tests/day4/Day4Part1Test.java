@@ -26,11 +26,13 @@ public class Day4Part1Test implements DayTest {
         System.out.println("Running tests for day 4 part 1");
         System.out.printf("Test 1: Day 4 example test: %s\n", day4ExampleTest() ? "PASSED" : "FAILED");
         System.out.printf("Test 2: Day 4 number parsed test: %s\n", numberParserTest() ? "PASSED" : "FAILED");
+        System.out.printf("Test 3: Day 4 timed input test: %s\n", day4Part1InputTest() ? "PASSED" : "FAILED");
     }
 
     private boolean day4ExampleTest() {
         Day4Part1 day4Part1 = new Day4Part1();
         int answer = day4Part1.solve(exampleInput.split("\n"));
+        System.out.printf("Result should equal: %d. Result equals: %d\n", 13, answer);
         return answer == 13;
     }
 
@@ -51,8 +53,28 @@ public class Day4Part1Test implements DayTest {
                 List.of(88, 30, 70, 12, 93, 22, 82, 36),
                 List.of(74, 77, 10, 23, 35, 67, 36, 11));
 
-        Map<String, List<List<Integer>>> results = Day4Part1.processInput(exampleInput.split("\n"));
+        String[] input = exampleInput.split("\n");
+        for (int i = 0; i < input.length; i++) {
+            String[] linePart = input[i].split("\\|");
+            String myNumbersAsString = linePart[1];
+            String winningNumbersAsString = linePart[0].split("\\:")[1];
+            List<Integer> myNumbersTest = Day4Part1.parseLineNumbers(myNumbersAsString);
+            List<Integer> winningNumbersTest = Day4Part1.parseLineNumbers(winningNumbersAsString);
+            if (!winningNumbers.get(i).equals(winningNumbersTest) || !myNumbers.get(i).equals(myNumbersTest)) {
+                return false;
+            }
+        }
 
-        return results.get("myNumbers").equals(myNumbers) && results.get("winningNumbers").equals(winningNumbers);
+        return true;
+    }
+
+    private boolean day4Part1InputTest() {
+        long startTime = System.nanoTime();
+        String[] input = api.getInput(2023, 4);
+        Day4Part1 day4Part1 = new Day4Part1();
+        int answer = day4Part1.solve(input);
+        long endTime = System.nanoTime() - startTime;
+        System.out.printf("Day 4 part 1 took: %f seconds\n", ((double) endTime) / 1_000_000_000);
+        return answer == 17782;
     }
 }
