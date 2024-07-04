@@ -39,14 +39,37 @@ public class Day4Part2 implements Day {
         parseLineNumbers(winningNumbersAsString));
   }
 
-  public static int processInput(String[] input) {
+  // TODO:
+  // Example input passes test
+  // Need to cache original card result to apply for each copied version of that
+  // card to optimize
+  // Need to make solution pass
+  public static int processInput(String[] lines) {
     int scratchCardCount = 0;
+    Map<String, Integer> copiedCardMap = new HashMap<>();
+    Map<String, Integer> originalCardMap = new HashMap<>(); // TODO: Cache
 
-    for (String line : input) {
-      scratchCardCount++; // Original card
-      ProcessedLine processedLine = processLine(line);
-      int numberOfCardsToCopy = getWinningNumberCount(processedLine.myNumbers, processedLine.winningNumbers);
-      // TODO: copy cards and store in hashmap
+    for (int i = 0; i < lines.length; i++) {
+      final int nextCardNumber = i + 2; // Card starts at 1, 2, 3.. vs index 0, 1, 2
+      final ProcessedLine processedLine = processLine(lines[i]);
+      final int numberOfCardsToCopy = getWinningNumberCount(processedLine.myNumbers, processedLine.winningNumbers);
+      int numberOfTimesToProcess = 1;
+      numberOfTimesToProcess += copiedCardMap.getOrDefault(processedLine.cardName, 0);
+
+      System.out.println(processedLine.cardName);
+      System.out.println(numberOfCardsToCopy);
+      System.out.printf("%d -> %d\n", nextCardNumber, nextCardNumber + numberOfCardsToCopy - 1);
+
+      for (int j = 0; j < numberOfTimesToProcess; j++) {
+        scratchCardCount++;
+        for (int c = nextCardNumber; c < nextCardNumber + numberOfCardsToCopy; c++) {
+          String card = "Card " + c;
+          copiedCardMap.merge(card, 1, Integer::sum);
+        }
+      }
+
+      System.out.println(copiedCardMap.toString());
+      System.out.println();
     }
 
     return scratchCardCount;

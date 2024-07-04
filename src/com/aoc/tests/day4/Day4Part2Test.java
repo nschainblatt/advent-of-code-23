@@ -68,13 +68,15 @@ public class Day4Part2Test implements DayTest {
     }
 
     private boolean day4Part2InputTest() {
-        // TODO:
         long startTime = System.nanoTime();
         String[] input = api.getInput(2023, 4);
         Day4Part2 day4Part2 = new Day4Part2();
         int answer = day4Part2.solve(input);
         long endTime = System.nanoTime() - startTime;
         System.out.printf("Day 4 part 2 took: %f seconds\n", ((double) endTime) / 1_000_000_000);
+        // TODO:
+        System.out.printf("Result should equal: %d. Result equals: %d\n", 30, answer);
         return answer == 17782;
+        //
     }
 }
