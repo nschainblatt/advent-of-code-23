@@ -1,7 +1,6 @@
 package com.aoc.tests.day4;
 
 import java.util.List;
-import java.util.Map;
 
 import com.aoc.api.AdventOfCodeApi;
 import com.aoc.day4.Day4Part1;
