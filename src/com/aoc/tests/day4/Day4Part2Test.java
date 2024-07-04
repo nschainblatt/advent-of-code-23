@@ -23,7 +23,7 @@ public class Day4Part2Test implements DayTest {
 
     public void run() {
         System.out.println("Running tests for day 4 part 2");
-        System.out.printf("Test 1: Day 4 example test: %s\n", day4ExampleTest() ? "PASSED" : "FAILED");
+        System.out.printf("Test 1: Day 4 part 2 example test: %s\n", day4ExampleTest() ? "PASSED" : "FAILED");
         System.out.printf("Test 2: Day 4 number parsed test: %s\n", numberParserTest() ? "PASSED" : "FAILED");
         System.out.printf("Test 3: Day 4 timed input test: %s\n", day4Part2InputTest() ? "PASSED" : "FAILED");
     }
@@ -31,8 +31,8 @@ public class Day4Part2Test implements DayTest {
     private boolean day4ExampleTest() {
         Day4Part2 day4Part2 = new Day4Part2();
         int answer = day4Part2.solve(exampleInput.split("\n"));
-        System.out.printf("Result should equal: %d. Result equals: %d\n", 13, answer);
-        return answer == 13;
+        System.out.printf("Result should equal: %d. Result equals: %d\n", 30, answer);
+        return answer == 30;
     }
 
     private boolean numberParserTest() {
@@ -68,6 +68,7 @@ public class Day4Part2Test implements DayTest {
     }
 
     private boolean day4Part2InputTest() {
+        // TODO:
         long startTime = System.nanoTime();
         String[] input = api.getInput(2023, 4);
         Day4Part2 day4Part2 = new Day4Part2();
