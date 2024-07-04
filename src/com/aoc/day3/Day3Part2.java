@@ -3,18 +3,11 @@ package com.aoc.day3;
 import java.util.List;
 import java.util.ArrayList;
 
-import com.aoc.api.AdventOfCodeApi;
 import com.aoc.Day;
 
 public class Day3Part2 implements Day {
-  private AdventOfCodeApi api;
 
-  public Day3Part2(AdventOfCodeApi api) {
-    this.api = api;
-  }
-
-  public int solve() {
-    String[] lines = api.getInput(2023, 3);
+  public int solve(String[] lines) {
     int gearSum = 0;
     ParsedLine previousParsedLine = null;
 

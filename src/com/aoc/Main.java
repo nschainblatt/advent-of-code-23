@@ -7,6 +7,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import com.aoc.api.AdventOfCodeApi;
+import com.aoc.dotenv.DotEnv;
+
 public class Main {
   public static enum CommandLineArgument {
     Year, Day, Part
@@ -28,8 +31,18 @@ public class Main {
         parsedCommandLineArguments.get(CommandLineArgument.Year),
         parsedCommandLineArguments.get(CommandLineArgument.Day),
         parsedCommandLineArguments.get(CommandLineArgument.Part));
+
+    String sessionCookie = new DotEnv()
+        .loadVariables()
+        .getVariables()
+        .get("sessionCookie");
+    AdventOfCodeApi api = new AdventOfCodeApi(sessionCookie);
+    String[] input = api.getInput(
+        parsedCommandLineArguments.get(CommandLineArgument.Year),
+        parsedCommandLineArguments.get(CommandLineArgument.Day)
+    );
     aocDay.ifPresentOrElse(
-        (day) -> System.out.printf("Result: %d\n", day.solve()),
+        (day) -> System.out.printf("Result: %d\n", day.solve(input)),
         () -> System.out.println("Invalid Year, Day, or Part argument"));
   }
 

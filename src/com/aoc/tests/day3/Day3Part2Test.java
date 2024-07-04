@@ -19,7 +19,7 @@ public class Day3Part2Test implements DayTest {
 
   private boolean day3Part2InputTest() {
     long startTime = System.nanoTime();
-    int result = new Day3Part2(this.api).solve();
+    int result = new Day3Part2().solve(api.getInput(2023, 3));
     double duration = Long.valueOf((System.nanoTime() - startTime)).doubleValue() / 1_000_000_000;
     System.out.printf("Day 3 part 2 optimized took: %f seconds\n", duration);
     System.out.printf("Test result: %d should equal: %d\n", result, 75220503);

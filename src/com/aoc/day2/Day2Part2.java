@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.aoc.Day;
-import com.aoc.api.AdventOfCodeApi;
 
 public class Day2Part2 implements Day {
 
@@ -18,18 +17,10 @@ public class Day2Part2 implements Day {
     }
   }
 
-  private AdventOfCodeApi api;
-
-  public Day2Part2(AdventOfCodeApi api) {
-    this.api = api;
-  }
-
-  public int solve() {
-    String[] splitInput = api.getInput(2023, 2);
-
+  public int solve(String[] input) {
     List<Game> games = new ArrayList<Game>();
 
-    for (String line : splitInput) {
+    for (String line : input) {
       Game newGame = new Game(line);
       newGame.parseLine();
       games.add(newGame);

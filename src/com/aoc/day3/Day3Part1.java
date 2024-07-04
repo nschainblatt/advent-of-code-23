@@ -3,29 +3,11 @@ package com.aoc.day3;
 import java.util.List;
 import java.util.ArrayList;
 
-import com.aoc.api.AdventOfCodeApi;
 import com.aoc.Day;
 
-// TODO:
-// 1. Cleanup DONE
-// 2. Optimize my way TODO
-// 3. Implement equality method DONE
-// 4. Use equality method in tests DONE
-// 5. Review other solutions TODO
-// 6. Implement API and remove sessionCookie from current code DONE
-// 7. Edit git history to remove cookie DONE
-// 8. Refactor tests DONE 
-//
-
 public class Day3Part1 implements Day {
-  private AdventOfCodeApi api;
 
-  public Day3Part1(AdventOfCodeApi api) {
-    this.api = api;
-  }
-
-  public int solve() {
-    String[] lines = api.getInput(2023, 3);
+  public int solve(String[] lines) {
     int sum = 0;
     ParsedLine previousParsedLine = null;
 

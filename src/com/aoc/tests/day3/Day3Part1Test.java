@@ -90,7 +90,7 @@ public class Day3Part1Test implements DayTest {
 
   private boolean day3Part1InputTest() {
     long startTime = System.nanoTime();
-    int result = new Day3Part1(this.api).solve();
+    int result = new Day3Part1().solve(api.getInput(2023, 3));
     double duration = Long.valueOf((System.nanoTime() - startTime)).doubleValue() / 1_000_000_000;
     System.out.printf("Day 3 part 1 took: %f seconds\n", duration);
     return 509115 == result;

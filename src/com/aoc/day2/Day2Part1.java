@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.aoc.Day;
-import com.aoc.api.AdventOfCodeApi;
 
 enum Color {
   RED(12), GREEN(13), BLUE(14);
@@ -18,18 +17,10 @@ enum Color {
 
 public class Day2Part1 implements Day {
 
-  private AdventOfCodeApi api;
-
-  public Day2Part1(AdventOfCodeApi api) {
-    this.api = api;
-  }
-
-  public int solve() {
-    String[] splitInput = api.getInput(2023, 2);
-
+  public int solve(String[] input) {
     List<Game> possibleGames = new ArrayList<Game>();
 
-    for (String line : splitInput) {
+    for (String line : input) {
       Game newGame = new Game(
           Integer.parseInt(line.split(":")[0].split(" ")[1]),
           line);

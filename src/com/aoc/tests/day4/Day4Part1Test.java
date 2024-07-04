@@ -30,7 +30,7 @@ public class Day4Part1Test implements DayTest {
     }
 
     private boolean day4ExampleTest() {
-        Day4Part1 day4Part1 = new Day4Part1(api);
+        Day4Part1 day4Part1 = new Day4Part1();
         int answer = day4Part1.solve(exampleInput.split("\n"));
         return answer == 13;
     }

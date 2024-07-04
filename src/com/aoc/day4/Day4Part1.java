@@ -8,17 +8,8 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import com.aoc.Day;
-import com.aoc.api.AdventOfCodeApi;
 
 public class Day4Part1 implements Day {
-
-  // TODO: Fix Day interface and update other days
-  public Day4Part1(AdventOfCodeApi api) {
-  }
-  public int solve() {
-    return 0;
-  }
-  //
 
   public int solve(String[] input) {
     int sum = 0;
