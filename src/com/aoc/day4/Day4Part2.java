@@ -28,6 +28,11 @@ public class Day4Part2 implements Day {
       this.winningNumbers = winningNumbers;
       this.winningNumberCount = winningNumberCount;
     }
+
+    @Override
+    public String toString() {
+      return name + " " + winningNumberCount;
+    }
   }
 
   private static Card processLine(String line) {
