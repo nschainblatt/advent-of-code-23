@@ -54,18 +54,12 @@ public class Day4Part2 implements Day {
       final int numberOfCardsToCopy = getWinningNumberCount(currentCard.myNumbers, currentCard.winningNumbers);
       int numberOfTimesToProcessCurrentCard = 1 + copiedCardMap.getOrDefault(currentCard.name, 0);
 
-      System.out.println(currentCard.name);
-      System.out.println(numberOfCardsToCopy);
-
       int startingCardNumber = i + 2;
       int endingCardNumber = startingCardNumber + numberOfCardsToCopy;
       for (int j = 0; j < numberOfTimesToProcessCurrentCard; j++) {
         scratchCardCount++;
         addCopiedCards(copiedCardMap, startingCardNumber, endingCardNumber);
       }
-
-      System.out.println(copiedCardMap.toString());
-      System.out.println();
     }
 
     return scratchCardCount;
