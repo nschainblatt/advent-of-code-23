@@ -16,24 +16,24 @@ public class Day4Part2 implements Day {
     return sum;
   }
 
-  private static class ProcessedLine {
-    final String cardName;
+  private static class Card {
+    final String name;
     final List<Integer> myNumbers;
     final List<Integer> winningNumbers;
 
-    ProcessedLine(String cardName, List<Integer> myNumbers, List<Integer> winningNumbers) {
-      this.cardName = cardName;
+    Card(String name, List<Integer> myNumbers, List<Integer> winningNumbers) {
+      this.name = name;
       this.myNumbers = myNumbers;
       this.winningNumbers = winningNumbers;
     }
   }
 
-  private static ProcessedLine processLine(String line) {
+  private static Card processLine(String line) {
     String[] linePart = line.split("\\|");
     String myNumbersAsString = linePart[1];
     String winningNumbersAsString = linePart[0].split("\\:")[1];
     String cardName = linePart[0].split("\\:")[0].trim();
-    return new ProcessedLine(
+    return new Card(
         cardName,
         parseLineNumbers(myNumbersAsString),
         parseLineNumbers(winningNumbersAsString));
@@ -51,16 +51,15 @@ public class Day4Part2 implements Day {
 
     for (int i = 0; i < lines.length; i++) {
       final int nextCardNumber = i + 2; // Card starts at 1, 2, 3.. vs index 0, 1, 2
-      final ProcessedLine processedLine = processLine(lines[i]);
-      final int numberOfCardsToCopy = getWinningNumberCount(processedLine.myNumbers, processedLine.winningNumbers);
-      int numberOfTimesToProcess = 1;
-      numberOfTimesToProcess += copiedCardMap.getOrDefault(processedLine.cardName, 0);
+      final Card currentCard = processLine(lines[i]);
+      final int numberOfCardsToCopy = getWinningNumberCount(currentCard.myNumbers, currentCard.winningNumbers);
+      int numberOfTimesToProcessCurrentCard = 1 + copiedCardMap.getOrDefault(currentCard.name, 0);
 
-      System.out.println(processedLine.cardName);
+      System.out.println(currentCard.name);
       System.out.println(numberOfCardsToCopy);
       System.out.printf("%d -> %d\n", nextCardNumber, nextCardNumber + numberOfCardsToCopy - 1);
 
-      for (int j = 0; j < numberOfTimesToProcess; j++) {
+      for (int j = 0; j < numberOfTimesToProcessCurrentCard; j++) {
         scratchCardCount++;
         for (int c = nextCardNumber; c < nextCardNumber + numberOfCardsToCopy; c++) {
           String card = "Card " + c;
