@@ -47,23 +47,19 @@ public class Day4Part2 implements Day {
         cardName,
         myNumbers,
         winningNumbers,
-        winningNumberCount
-    );
+        winningNumberCount);
   }
 
-  // Every line is a card to process
   public static int processInput(String[] lines) {
     int scratchCardCount = 0;
     Map<String, Integer> copiedCardMap = new HashMap<>();
-    Map<String, Integer> originalCardMap = new HashMap<>(); // TODO: Cache
 
     for (int i = 0; i < lines.length; i++) {
       final Card currentCard = processLine(lines[i]);
-      final int numberOfCardsToCopy = currentCard.winningNumberCount;
       int numberOfTimesToProcessCurrentCard = 1 + copiedCardMap.getOrDefault(currentCard.name, 0);
-
       int startingCardNumber = i + 2;
-      int endingCardNumber = startingCardNumber + numberOfCardsToCopy;
+      int endingCardNumber = startingCardNumber + currentCard.winningNumberCount;
+
       for (int j = 0; j < numberOfTimesToProcessCurrentCard; j++) {
         scratchCardCount++;
         addCopiedCards(copiedCardMap, startingCardNumber, endingCardNumber);
