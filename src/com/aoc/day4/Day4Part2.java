@@ -1,11 +1,14 @@
 package com.aoc.day4;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.Comparator;
 
 import com.aoc.Day;
 
@@ -21,6 +24,7 @@ public class Day4Part2 implements Day {
     final List<Integer> myNumbers;
     final List<Integer> winningNumbers;
     final int winningNumberCount;
+    List<String> namesOfCardCopies = new ArrayList<>();
 
     Card(String name, List<Integer> myNumbers, List<Integer> winningNumbers, int winningNumberCount) {
       this.name = name;
@@ -31,7 +35,9 @@ public class Day4Part2 implements Day {
 
     @Override
     public String toString() {
-      return name + " " + winningNumberCount;
+      return "\n" + name + " has " + winningNumberCount + " winning card numbers\nCopies:\n"
+          + namesOfCardCopies.toString()
+          + "\n";
     }
   }
 
@@ -54,6 +60,8 @@ public class Day4Part2 implements Day {
     int scratchCardCount = 0;
     Map<String, Integer> copiedCardMap = new HashMap<>();
 
+    List<Card> listOfCards = new ArrayList<>();
+
     for (int i = 0; i < lines.length; i++) {
       final Card currentCard = processLine(lines[i]);
       int numberOfTimesToProcessCurrentCard = 1 + copiedCardMap.getOrDefault(currentCard.name, 0);
@@ -62,17 +70,24 @@ public class Day4Part2 implements Day {
 
       for (int j = 0; j < numberOfTimesToProcessCurrentCard; j++) {
         scratchCardCount++;
-        addCopiedCards(copiedCardMap, startingCardNumber, endingCardNumber);
+        addCopiedCards(copiedCardMap, currentCard, startingCardNumber, endingCardNumber);
       }
+      listOfCards.add(currentCard);
     }
 
+    for (Card card : listOfCards) {
+      // card.namesOfCardCopies.sort(Comparator.naturalOrder());
+      System.out.println(card);
+    }
     return scratchCardCount;
   }
 
-  private static void addCopiedCards(Map<String, Integer> copiedCardMap, int startingCardNumber, int endingCardNumber) {
+  private static void addCopiedCards(Map<String, Integer> copiedCardMap, Card card,
+      int startingCardNumber, int endingCardNumber) {
     for (int c = startingCardNumber; c < endingCardNumber; c++) {
-      String card = "Card " + c;
-      copiedCardMap.merge(card, 1, Integer::sum);
+      String name = "Card " + c;
+      card.namesOfCardCopies.add(name);
+      copiedCardMap.merge("Card " + c, 1, Integer::sum);
     }
   }
 
@@ -87,10 +102,23 @@ public class Day4Part2 implements Day {
 
     for (Integer winningNumber : winningNumbers) {
       if (myNumbers.contains(winningNumber)) {
+        // if (countOccurenceOfNumber(myNumbers, winningNumber) > 1) {
+        //   System.out.println("DEBUG");
+        // }
         winningNumberCount++;
       }
     }
 
     return winningNumberCount;
+  }
+
+  private static int countOccurenceOfNumber(List<Integer> numbers, Integer number) {
+    int count = 0;
+    for (Integer n : numbers) {
+      if (n.equals(number)) {
+        count++;
+      }
+    }
+    return count;
   }
 }
