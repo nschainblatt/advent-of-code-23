@@ -20,11 +20,13 @@ public class Day4Part2 implements Day {
     final String name;
     final List<Integer> myNumbers;
     final List<Integer> winningNumbers;
+    final int winningNumberCount;
 
-    Card(String name, List<Integer> myNumbers, List<Integer> winningNumbers) {
+    Card(String name, List<Integer> myNumbers, List<Integer> winningNumbers, int winningNumberCount) {
       this.name = name;
       this.myNumbers = myNumbers;
       this.winningNumbers = winningNumbers;
+      this.winningNumberCount = winningNumberCount;
     }
   }
 
@@ -33,17 +35,18 @@ public class Day4Part2 implements Day {
     String myNumbersAsString = linePart[1];
     String winningNumbersAsString = linePart[0].split("\\:")[1];
     String cardName = linePart[0].split("\\:")[0].trim();
+    List<Integer> myNumbers = parseLineNumbers(myNumbersAsString);
+    List<Integer> winningNumbers = parseLineNumbers(winningNumbersAsString);
+    int winningNumberCount = getWinningNumberCount(myNumbers, winningNumbers);
     return new Card(
         cardName,
-        parseLineNumbers(myNumbersAsString),
-        parseLineNumbers(winningNumbersAsString));
+        myNumbers,
+        winningNumbers,
+        winningNumberCount
+    );
   }
 
-  // TODO:
-  // Example input passes test
-  // Need to cache original card result to apply for each copied version of that
-  // card to optimize
-  // Need to make solution pass
+  // Every line is a card to process
   public static int processInput(String[] lines) {
     int scratchCardCount = 0;
     Map<String, Integer> copiedCardMap = new HashMap<>();
@@ -51,7 +54,7 @@ public class Day4Part2 implements Day {
 
     for (int i = 0; i < lines.length; i++) {
       final Card currentCard = processLine(lines[i]);
-      final int numberOfCardsToCopy = getWinningNumberCount(currentCard.myNumbers, currentCard.winningNumbers);
+      final int numberOfCardsToCopy = currentCard.winningNumberCount;
       int numberOfTimesToProcessCurrentCard = 1 + copiedCardMap.getOrDefault(currentCard.name, 0);
 
       int startingCardNumber = i + 2;
