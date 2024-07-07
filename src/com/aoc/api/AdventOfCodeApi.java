@@ -23,8 +23,12 @@ public class AdventOfCodeApi {
           .uri(uri)
           .header("Cookie", sessionCookie)
           .build();
-      CompletableFuture<HttpResponse<String>> response = client.sendAsync(request, BodyHandlers.ofString());
-      return response.get().body().split("\n");
+      HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
+      String[] input = response.body().split("\n");
+      if (input.length == 0) {
+        System.out.println("Input is empty");
+      }
+      return input;
     } catch (Exception e) {
       System.out.println("An error occurred getting your input, would you like to view the error? (Y/n)");
       try (Scanner scanner = new Scanner(System.in)) {
