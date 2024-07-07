@@ -50,21 +50,18 @@ public class Day4Part2 implements Day {
     Map<String, Integer> originalCardMap = new HashMap<>(); // TODO: Cache
 
     for (int i = 0; i < lines.length; i++) {
-      final int nextCardNumber = i + 2; // Card starts at 1, 2, 3.. vs index 0, 1, 2
       final Card currentCard = processLine(lines[i]);
       final int numberOfCardsToCopy = getWinningNumberCount(currentCard.myNumbers, currentCard.winningNumbers);
       int numberOfTimesToProcessCurrentCard = 1 + copiedCardMap.getOrDefault(currentCard.name, 0);
 
       System.out.println(currentCard.name);
       System.out.println(numberOfCardsToCopy);
-      System.out.printf("%d -> %d\n", nextCardNumber, nextCardNumber + numberOfCardsToCopy - 1);
 
+      int startingCardNumber = i + 2;
+      int endingCardNumber = startingCardNumber + numberOfCardsToCopy;
       for (int j = 0; j < numberOfTimesToProcessCurrentCard; j++) {
         scratchCardCount++;
-        for (int c = nextCardNumber; c < nextCardNumber + numberOfCardsToCopy; c++) {
-          String card = "Card " + c;
-          copiedCardMap.merge(card, 1, Integer::sum);
-        }
+        addCopiedCards(copiedCardMap, startingCardNumber, endingCardNumber);
       }
 
       System.out.println(copiedCardMap.toString());
@@ -72,6 +69,13 @@ public class Day4Part2 implements Day {
     }
 
     return scratchCardCount;
+  }
+
+  private static void addCopiedCards(Map<String, Integer> copiedCardMap, int startingCardNumber, int endingCardNumber) {
+    for (int c = startingCardNumber; c < endingCardNumber; c++) {
+      String card = "Card " + c;
+      copiedCardMap.merge(card, 1, Integer::sum);
+    }
   }
 
   public static List<Integer> parseLineNumbers(String linePart) {
