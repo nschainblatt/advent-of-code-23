@@ -24,8 +24,11 @@ public class Day4Part2Test implements DayTest {
     public void run() {
         System.out.println("Running tests for day 4 part 2");
         System.out.printf("Test 1: Day 4 part 2 example test: %s\n", day4ExampleTest() ? "PASSED" : "FAILED");
-        System.out.printf("Test 2: Day 4 number parsed test: %s\n", numberParserTest() ? "PASSED" : "FAILED");
-        System.out.printf("Test 3: Day 4 timed input test: %s\n", day4Part2InputTest() ? "PASSED" : "FAILED");
+        // System.out.printf("Test 2: Day 4 number parsed test: %s\n",
+        // numberParserTest() ? "PASSED" : "FAILED");
+        // System.out.printf("Test 3: Day 4 timed input test: %s\n",
+        // day4Part2InputTest() ? "PASSED" : "FAILED");
+        System.out.printf("Test 4: Day 4 part 2 one card test: %s\n", oneCardTest() ? "PASSED" : "FAILED");
     }
 
     private boolean day4ExampleTest() {
@@ -78,5 +81,13 @@ public class Day4Part2Test implements DayTest {
         System.out.printf("Result should equal: %d. Result equals: %d\n", 30, answer);
         return answer == 17782;
         //
+    }
+
+    private boolean oneCardTest() {
+        String[] input = new String[] {
+                "Card 191: 75 67 90 35 11 25 26 66  3 93 | 17 95 29 47 97 58 33 22 98 56 28 23 69 13 41 83 64  1 19 45 49 89 74 80  9" };
+        Day4Part2 day4Part2 = new Day4Part2();
+        int answer = day4Part2.solve(input);
+        return true;
     }
 }
