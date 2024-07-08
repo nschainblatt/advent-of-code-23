@@ -1,14 +1,11 @@
 package com.aoc.day4;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.Comparator;
 
 import com.aoc.Day;
 
@@ -20,24 +17,17 @@ public class Day4Part2 implements Day {
   }
 
   private static class Card {
-    final String name;
-    final List<Integer> myNumbers;
-    final List<Integer> winningNumbers;
+    final int number;
     final int winningNumberCount;
-    List<String> namesOfCardCopies = new ArrayList<>();
 
-    Card(String name, List<Integer> myNumbers, List<Integer> winningNumbers, int winningNumberCount) {
-      this.name = name;
-      this.myNumbers = myNumbers;
-      this.winningNumbers = winningNumbers;
+    Card(int number, int winningNumberCount) {
+      this.number = number;
       this.winningNumberCount = winningNumberCount;
     }
 
     @Override
     public String toString() {
-      return "\n" + name + " has " + winningNumberCount + " winning card numbers\nCopies:\n"
-          + namesOfCardCopies.toString()
-          + "\n";
+      return "\nCard: " + number + " has " + winningNumberCount + " winning card numbers\nCopies:\n";
     }
   }
 
@@ -45,26 +35,24 @@ public class Day4Part2 implements Day {
     String[] linePart = line.split("\\|");
     String myNumbersAsString = linePart[1];
     String winningNumbersAsString = linePart[0].split("\\:")[1];
-    String cardName = linePart[0].split("\\:")[0].trim();
+    int cardNumber = Integer.parseInt(linePart[0].split("\\:")[0].trim().chars()
+        .filter(Character::isDigit)
+        .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString());
     List<Integer> myNumbers = parseLineNumbers(myNumbersAsString);
     List<Integer> winningNumbers = parseLineNumbers(winningNumbersAsString);
     int winningNumberCount = getWinningNumberCount(myNumbers, winningNumbers);
     return new Card(
-        cardName,
-        myNumbers,
-        winningNumbers,
+        cardNumber,
         winningNumberCount);
   }
 
   public static int processInput(String[] lines) {
     int scratchCardCount = 0;
-    Map<String, Integer> copiedCardMap = new HashMap<>();
-
-    List<Card> listOfCards = new ArrayList<>();
+    Map<Integer, Integer> copiedCardMap = new HashMap<>();
 
     for (int i = 0; i < lines.length; i++) {
       final Card currentCard = processLine(lines[i]);
-      int numberOfTimesToProcessCurrentCard = 1 + copiedCardMap.getOrDefault(currentCard.name, 0);
+      int numberOfTimesToProcessCurrentCard = 1 + copiedCardMap.getOrDefault(currentCard.number, 0);
       int startingCardNumber = i + 2;
       int endingCardNumber = startingCardNumber + currentCard.winningNumberCount;
 
@@ -72,22 +60,15 @@ public class Day4Part2 implements Day {
         scratchCardCount++;
         addCopiedCards(copiedCardMap, currentCard, startingCardNumber, endingCardNumber);
       }
-      listOfCards.add(currentCard);
     }
 
-    for (Card card : listOfCards) {
-      // card.namesOfCardCopies.sort(Comparator.naturalOrder());
-      System.out.println(card);
-    }
     return scratchCardCount;
   }
 
-  private static void addCopiedCards(Map<String, Integer> copiedCardMap, Card card,
+  private static void addCopiedCards(Map<Integer, Integer> copiedCardMap, Card card,
       int startingCardNumber, int endingCardNumber) {
     for (int c = startingCardNumber; c < endingCardNumber; c++) {
-      String name = "Card " + c;
-      card.namesOfCardCopies.add(name);
-      copiedCardMap.merge("Card " + c, 1, Integer::sum);
+      copiedCardMap.merge(c, 1, Integer::sum);
     }
   }
 
@@ -102,23 +83,10 @@ public class Day4Part2 implements Day {
 
     for (Integer winningNumber : winningNumbers) {
       if (myNumbers.contains(winningNumber)) {
-        // if (countOccurenceOfNumber(myNumbers, winningNumber) > 1) {
-        //   System.out.println("DEBUG");
-        // }
         winningNumberCount++;
       }
     }
 
     return winningNumberCount;
-  }
-
-  private static int countOccurenceOfNumber(List<Integer> numbers, Integer number) {
-    int count = 0;
-    for (Integer n : numbers) {
-      if (n.equals(number)) {
-        count++;
-      }
-    }
-    return count;
   }
 }
