@@ -1,2 +1,6 @@
 target/
+out/
+.idea/
 *.env
+*.iml
+
