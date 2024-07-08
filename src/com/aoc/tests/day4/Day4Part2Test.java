@@ -8,12 +8,12 @@ import com.aoc.tests.DayTest;
 
 public class Day4Part2Test implements DayTest {
     private static final String exampleInput = """
-            Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53
-            Card 2: 13 32 20 16 61 | 61 30 68 82 17 32 24 19
-            Card 3:  1 21 53 59 44 | 69 82 63 72 16 21 14  1
-            Card 4: 41 92 73 84 69 | 59 84 76 51 58  5 54 83
-            Card 5: 87 83 26 28 32 | 88 30 70 12 93 22 82 36
-            Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11
+            Card  1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53
+            Card  2: 13 32 20 16 61 | 61 30 68 82 17 32 24 19
+            Card  3:  1 21 53 59 44 | 69 82 63 72 16 21 14  1
+            Card  4: 41 92 73 84 69 | 59 84 76 51 58  5 54 83
+            Card  5: 87 83 26 28 32 | 88 30 70 12 93 22 82 36
+            Card  6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11
             """;
     private AdventOfCodeApi api;
 
@@ -24,10 +24,10 @@ public class Day4Part2Test implements DayTest {
     public void run() {
         System.out.println("Running tests for day 4 part 2");
         System.out.printf("Test 1: Day 4 part 2 example test: %s\n", day4ExampleTest() ? "PASSED" : "FAILED");
-        // System.out.printf("Test 2: Day 4 number parsed test: %s\n",
-        // numberParserTest() ? "PASSED" : "FAILED");
-        // System.out.printf("Test 3: Day 4 timed input test: %s\n",
-        // day4Part2InputTest() ? "PASSED" : "FAILED");
+        System.out.printf("Test 2: Day 4 number parsed test: %s\n",
+                numberParserTest() ? "PASSED" : "FAILED");
+        System.out.printf("Test 3: Day 4 timed input test: %s\n",
+                day4Part2InputTest() ? "PASSED" : "FAILED");
         System.out.printf("Test 4: Day 4 part 2 one card test: %s\n", oneCardTest() ? "PASSED" : "FAILED");
     }
 
@@ -77,10 +77,8 @@ public class Day4Part2Test implements DayTest {
         int answer = day4Part2.solve(input);
         long endTime = System.nanoTime() - startTime;
         System.out.printf("Day 4 part 2 took: %f seconds\n", ((double) endTime) / 1_000_000_000);
-        // TODO:
-        System.out.printf("Result should equal: %d. Result equals: %d\n", 30, answer);
-        return answer == 17782;
-        //
+        System.out.printf("Result should equal: %d. Result equals: %d\n", 8477787, answer);
+        return answer == 8477787;
     }
 
     private boolean oneCardTest() {
@@ -88,6 +86,6 @@ public class Day4Part2Test implements DayTest {
                 "Card 191: 75 67 90 35 11 25 26 66  3 93 | 17 95 29 47 97 58 33 22 98 56 28 23 69 13 41 83 64  1 19 45 49 89 74 80  9" };
         Day4Part2 day4Part2 = new Day4Part2();
         int answer = day4Part2.solve(input);
-        return true;
+        return answer == 1;
     }
 }
